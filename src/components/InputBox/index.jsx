@@ -1,12 +1,18 @@
+import { nanoid } from 'nanoid'
 import React, { Component } from 'react'
 import inputbox from './index.module.css'
 
 export default class InputBox extends Component {
   handleKeyUp(e){
-    if(e.key=="Enter"){
-      console.log(e.target.value)
+    if(e.key=="Enter" && e.target.value.trim() !=''){
+      const todo={
+        id:nanoid(),
+        value:e.target.value,
+        done:false
+      }
+      this.props.addTodo(todo)
+      e.target.value=''
     }
-    // console.log(e.target.value)
   }
   render() {
     return (
