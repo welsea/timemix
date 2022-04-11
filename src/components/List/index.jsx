@@ -1,3 +1,4 @@
+import { render } from '@testing-library/react'
 import React, { Component } from 'react'
 import list from './index.module.css'
 export default class List extends Component {
