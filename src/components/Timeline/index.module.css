@@ -1,10 +1,12 @@
 .layout{
-    width: 80%;
+    width: 99%;
     margin: auto;
+    margin-top: 10px;
 }
 table, th,td{
-    border:1px solid #ddd;
+    border:1px solid #f6f6f6;
     border-collapse: collapse;
+    
 }
 
 table{
@@ -12,17 +14,64 @@ table{
 }
 
 th{
-    height: 30px;
-    width:40px;
+    height: 2em;
+    width: 14%;
+    background-color: #fad783;
+    color: #896306;;
 }
 
 td{
     height: 50px;
-    width: 20px;
     font-size: 12px;
 }
 
-.vth {  
+/* .vth {  
     width: 40px;
     text-align: left;
+  } */
+  thead tr th:first-child,
+  tbody tr td:first-child {
+    width: 1em;
+    min-width: 1em;
+    max-width: 1em;
+    text-align: center;
+    background-color: #fad783;
+    color: #896306;
+  }
+  /* Popup style */
+.popup_box {
+    position: fixed;
+    background: #00000050;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+  }
+  
+  .box {
+    position: relative;
+    width: 40%;
+    margin: 0 auto;
+    height: auto;
+    max-height: 70vh;
+    margin-top: calc(100vh - 85vh - 20px);
+    background: #fff;
+    border-radius: 4px;
+    padding: 20px;
+    border: 1px solid #999;
+    overflow: auto;
+  }
+  .btn{
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 4em;
+  }
+  .addBtn{
+    background-color: #E98B2A;
+    border: 1px solid white;
+    border-radius: 4px;
+    margin: 4em;
+    margin: 0 0 0 2em;
+    padding: 0.3em 1em;
+    color: white;
   }

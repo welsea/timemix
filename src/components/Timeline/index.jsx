@@ -8,8 +8,8 @@ export default class TimeLine extends Component {
             {
                 start:14.15,
                 end:18.15,
-                color:'#ddd',
-                commentOwn:'comment',
+                color:'#91AD70',
+                info:'comment',
                 shareWith:[
                     {
                         name:'tom',
@@ -22,15 +22,144 @@ export default class TimeLine extends Component {
                 ]
             }
         ],
-        hours:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
-        days:['Mon','Tue','Wed','Thur','Fri','Sat','Sun']
+        hours:24,
+        days:['Mon','Tue','Wed','Thur','Fri','Sat','Sun'],
+        dates:Array(7).fill(null),
+        isOpen:false,
+    }
+    componentDidMount(){
+        this.getDate()
+    }
+    
+    getDate=()=>{
+        const {dates}=this.state
+        var current = new Date();     // get current date   
+        var month=current.getMonth() 
+        var weekstart = current.getDate() - current.getDay() +1; 
+        var tmp="" 
+        for (const i in dates) {
+            tmp=(new Date(current.setDate(weekstart+i))).getUTCDate();
+            dates[i]=tmp+"."+month
+        }              
+        
+        this.setState(
+            {
+                dates:dates
+            }
+        )
+    }
+    // show the schedule already exist
+    showExits=()=>{
+
     }
   render() {
       const {hours}=this.state
       const {days}=this.state
+      const {dates}=this.state
     return (
       <div className={tl.layout}>
-        <table className={tl.tab}>
+        <table>
+            <thead>
+                    <tr>
+                        <th></th>
+                        {
+                            days.map((day,i)=>{
+                                return <th key={day}>{day+". "+dates[i]}</th>
+                            })
+                        }
+                    </tr>   
+            </thead>
+            <tbody>
+                    {
+                        [...Array(hours)].map((e,hour)=>{
+                            return(
+                                <tr key={hour+1}>
+                                    {
+                                        [""].concat(days).map((day,i)=>{
+                                            if(i===0) return <td key={day}>{hour+1}</td>
+                                            else return <Square key={dates[i]+"-"+(hour+1)} date={dates[i]} hour={hour+1}> </Square>
+                                        })
+                                    }
+                                </tr>
+                            ) 
+                        })
+                    }
+            </tbody>
+        </table>
+      </div>
+    )
+  }
+}
+
+class Square extends Component{
+    // each square in timeline table
+    state={
+        isOpen:false,
+        mouse:false,
+    }
+    // add schedule box popup
+    addSchedule=()=> { 
+        const {isOpen}=this.state
+        this.setState(
+            {isOpen:!isOpen}
+        )
+    }
+    // hover css
+    handleMouseEnter=()=>{
+        // const {mouse}=this.state
+        this.setState(
+          {mouse:true}
+        )
+    }
+    handleMouseLeave=()=>{
+        // const {mouse}=this.state
+        this.setState(
+          {mouse:false}
+        )
+    }
+    render (){
+        const {date}=this.props
+        const {hour}=this.props
+        const {isOpen}=this.state
+        const {mouse}=this.state
+        return(
+            <td style={{backgroundColor:mouse? '#ddd':'white'}} onClick={(e)=>this.addSchedule(e,date,hour)} key={date+"-"+hour} 
+            onMouseEnter={()=>this.handleMouseEnter()} onMouseLeave={()=>this.handleMouseLeave()}>
+                {isOpen && <Popup
+                    date={date}
+                    hour={hour}
+                    handleClose={this.addSchedule}
+                />}
+            </td>
+        )
+    }
+}
+
+class Popup extends Component{
+    handleClose=()=>{
+        this.props.handleClose()
+    }
+    render(){
+        const {date}=this.props
+        const {hour}=this.props
+        return (
+            <div className={tl.popup_box}>
+              <div className={tl.box}>
+              <h2>Add Schedule</h2>
+                <div>{date+hour}</div>
+                <div className={tl.btn}>
+                    <button onClick={this.handleClose} >Cancel</button>
+                    <button className={tl.addBtn}>Add</button>
+                </div>
+              </div>
+            </div>
+          );
+    }
+
+}
+  
+/*  horizental timeline
+     <table className={tl.tab}>
             <thead>
                 <tr>
                     <th></th>
@@ -57,38 +186,5 @@ export default class TimeLine extends Component {
                     })
                 }
             </tbody>
-        </table>
-      </div>
-    )
-  }
-}
-
-
-/*  vertical timeline
-        <thead>
-                <tr>
-                    <th></th>
-                    {
-                        days.map((day)=>{
-                            return <th key={day}>{day}.</th>
-                        })
-                    }
-                </tr>   
-            </thead>
-            <tbody>
-                {
-                    hours.map((hour)=>{
-                        return(
-                            <tr key={hour}>
-                                {
-                                    [""].concat(days).map((day,i)=>{
-                                        if(i===0) return <td key={day} >{hour}</td>
-                                        else return <td key={day}></td>
-                                    })
-                                }
-                            </tr>
-                        ) 
-                    })
-                }
-            </tbody>
+        </table> 
  */
