@@ -33,19 +33,16 @@ export default class TimeLine extends Component {
     
     getDate=()=>{
         const {dates}=this.state
-        var current = new Date();     // get current date   
-        var month=current.getMonth() 
-        var weekstart = current.getDate() - current.getDay() +1; 
-        var tmp="" 
+        const current = new Date();     // get current date   
+        const month=current.getMonth() 
+        const weekstart = current.getDate() - current.getDay() +2; 
         for (const i in dates) {
-            tmp=(new Date(current.setDate(weekstart+i))).getUTCDate();
+            var tmp=(new Date(current.setDate(weekstart+i))).getDate();
             dates[i]=tmp+"."+month
         }              
         
         this.setState(
-            {
-                dates:dates
-            }
+            { dates:dates}
         )
     }
     // show the schedule already exist
@@ -77,7 +74,7 @@ export default class TimeLine extends Component {
                                     {
                                         [""].concat(days).map((day,i)=>{
                                             if(i===0) return <td key={day}>{hour+1}</td>
-                                            else return <Square key={dates[i]+"-"+(hour+1)} date={dates[i]} hour={hour+1}> </Square>
+                                            else return <Square key={i+"-"+(hour+1)} date={dates[i]} hour={hour+1}> </Square>
                                         })
                                     }
                                 </tr>
