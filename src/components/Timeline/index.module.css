@@ -1,0 +1,28 @@
+.layout{
+    width: 80%;
+    margin: auto;
+}
+table, th,td{
+    border:1px solid #ddd;
+    border-collapse: collapse;
+}
+
+table{
+    width: 100%;
+}
+
+th{
+    height: 30px;
+    width:40px;
+}
+
+td{
+    height: 50px;
+    width: 20px;
+    font-size: 12px;
+}
+
+.vth {  
+    width: 40px;
+    text-align: left;
+  }

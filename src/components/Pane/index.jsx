@@ -4,7 +4,7 @@ import InputBox from '../InputBox'
 import Sum from '../Sum'
 import List from '../List'
 
-export default class Timeline extends Component {
+export default class Pane extends Component {
   constructor(props){
     super(props);
     this.state={
