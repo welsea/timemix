@@ -6,8 +6,11 @@ export default class TimeLine extends Component {
     state={
         schedule:[
             {
-                start:14.15,
-                end:18.15,
+                date:"3.5",
+                year:"2022",
+                start:"15:30",
+                end:"18:30",
+                timezone:-2,
                 color:'#91AD70',
                 info:'comment',
                 shareWith:[
@@ -40,10 +43,10 @@ export default class TimeLine extends Component {
             var tmp=(new Date(current.setDate(weekstart+i))).getDate();
             dates[i]=tmp+"."+month
         }              
-        
         this.setState(
             { dates:dates}
         )
+        // console.log(current.getTimezoneOffset()/60)
     }
     // show the schedule already exist
     showExits=()=>{
