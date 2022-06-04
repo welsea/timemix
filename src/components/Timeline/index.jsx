@@ -4,15 +4,16 @@ import tl from './index.module.css'
 
 export default class TimeLine extends Component {
     state={
-        schedule:[
+        schedules:[
             {
-                date:"3.5",
-                year:"2022",
                 start:"15:30",
                 end:"18:30",
                 timezone:-2,
-                color:'#91AD70',
-                info:'comment',
+                type:"work",
+                info:'infoinfoinfo',
+                date:"3.5",
+                weekday:5,
+                year:"2022",
                 shareWith:[
                     {
                         name:'tom',
@@ -22,16 +23,37 @@ export default class TimeLine extends Component {
                         name:'jerry',
                         comment:"Jerry's comment"
                     }
-                ]
+                ],
+                publicity:true,
+                owner:"uid2231"
+            },{
+                start:"12:30",
+                end:"17:30",
+                timezone:0,
+                type:"life",
+                info:'infoinfoinfo',
+                date:"4.5",
+                weekday:6,
+                year:"2022",
+                shareWith:[],
+                publicity:false,
+                owner:"uid1223"
             }
         ],
+        colors:{
+            "work":"#91AD70",
+            "life":"#89916B",
+            "other":"#69B0AC"
+        },
         hours:24,
         days:['Mon','Tue','Wed','Thur','Fri','Sat','Sun'],
         dates:Array(7).fill(null),
         isOpen:false,
+        post_schedules:Array(7).fill(null),
     }
     componentDidMount(){
         this.getDate()
+        this.showExits()
     }
     
     getDate=()=>{
@@ -44,53 +66,116 @@ export default class TimeLine extends Component {
             dates[i]=tmp+"."+month
         }              
         this.setState(
-            { dates:dates}
+            {dates:dates}
         )
         // console.log(current.getTimezoneOffset()/60)
     }
     // show the schedule already exist
     showExits=()=>{
+        const {schedules}=this.state
+        for (const schedule of schedules)
+            this.shwoSchedule(schedule)
+        
+    }
+    shwoSchedule=(schedule)=>{
+        // merge all the cell in the period
+        // change color and shows all the details
+        // only owner can chenge the time
+        // sharewith only can left comment
+        const {post_schedules}=this.state
+        const {colors}=this.state
+        // format: Sat Jun 04 2022 15:07:40 GMT+0200 (Central European Summer Time)
+        let start_h=parseInt(schedule.start.split(":")[0])
+        let start_m=parseInt(schedule.start.split(":")[1])
+        let end_h=parseInt(schedule.end.split(":")[0])
+        let end_m=parseInt(schedule.end.split(":")[0])
+        let start_id=schedule.weekday+"-"+start_h
+        let end_id=schedule.weekday+"-"+end_h
 
+        let top=document.getElementById(start_id).offsetTop
+        let width=document.getElementById(end_id).offsetWidth
+        let height=document.getElementById(end_id).offsetHeight
+
+        let totalh=height*(end_h-start_h-1)+(start_m*height)+(end_m*height)
+        let post_schedule={
+            "width":width+"px",
+            "height":totalh+"px",
+            "bcolor":colors[schedule.type],
+            "top":top+"px",
+            "info":schedule.info,
+        }
+        // post_schedules[1].push(post_schedule)
+        if(post_schedules[schedule.weekday]===null)
+            post_schedules[schedule.weekday]=[post_schedule]
+        else
+            post_schedules[schedule.weekday][post_schedules[schedule.weekday].length]=post_schedule
+
+        this.setState({
+            post_schedules:post_schedules
+        })
     }
   render() {
-      const {hours}=this.state
       const {days}=this.state
       const {dates}=this.state
+      const {post_schedules}=this.state
     return (
       <div className={tl.layout}>
-        <table>
-            <thead>
-                    <tr>
-                        <th></th>
-                        {
-                            days.map((day,i)=>{
-                                return <th key={day}>{day+". "+dates[i]}</th>
-                            })
-                        }
-                    </tr>   
-            </thead>
-            <tbody>
-                    {
-                        [...Array(hours)].map((e,hour)=>{
-                            return(
-                                <tr key={hour+1}>
-                                    {
-                                        [""].concat(days).map((day,i)=>{
-                                            if(i===0) return <td key={day}>{hour+1}</td>
-                                            else return <Square key={i+"-"+(hour+1)} date={dates[i]} hour={hour+1}> </Square>
-                                        })
-                                    }
-                                </tr>
-                            ) 
-                        })
-                    }
-            </tbody>
-        </table>
+            {
+                [""].concat(days).map((day,i)=>{
+                    if(i===0) return <Weekday key={"num"} day={"not"}></Weekday>
+                    else{
+                        if(post_schedules[i]) return <Weekday key={day} title={day+". "+dates[i-1]} day={i} schedule={post_schedules[i]}></Weekday>
+                        return <Weekday key={day} title={day+". "+dates[i-1]} 
+                                        day={i} schedule={false}></Weekday>} 
+                })
+            }
       </div>
     )
   }
 }
 
+class Weekday extends Component{
+    state={
+        hours:25,
+    }
+    test=()=>{
+        console.log(this.props.schedule)
+    }
+    render(){
+        const {day}=this.props
+        const {schedule}=this.props
+        const {title}=this.props
+        const {hours}=this.state
+        return(
+            <div className={day!=="not"? tl.columns:tl.numClo}>
+                {
+                    [...Array(hours)].map((e,hour)=>{
+                        if(day==="not"){
+                            if(hour===0) return <div key={day+"-"+hour} style={{height:"2em",backgroundColor:"#fad783"}}>&nbsp;</div>
+                            else return <div className={tl.num} key={day+hour}>{hour}</div>
+                        } 
+                        else if(hour===0) return <div key={day+"-"+hour} className={tl.title}>{title}</div>
+                        else return <Square  key={day+"-"+hour} id={day+"-"+(hour)} hour={hour}> </Square>
+                    })
+                }
+                {
+                    day!=="not"&&schedule&&<Schedule schedule={schedule} style={{backgroundColor:schedule.bcolor,top:"437px"}} />
+                }             
+            </div>
+        )
+    }
+}
+
+class Schedule extends Component{
+    render(){
+        const {schedule}=this.props
+        return(
+            <div className={tl.ss} style={this.props.style}>
+                <div>infoinfoinfo</div>
+            </div>
+        )
+    }
+}
 class Square extends Component{
     // each square in timeline table
     state={
@@ -120,17 +205,19 @@ class Square extends Component{
     render (){
         const {date}=this.props
         const {hour}=this.props
+        const {id}=this.props
         const {isOpen}=this.state
         const {mouse}=this.state
         return(
-            <td style={{backgroundColor:mouse? '#ddd':'white'}} onClick={(e)=>this.addSchedule(e,date,hour)} key={date+"-"+hour} 
+            <div style={{backgroundColor:mouse? '#ddd':'white'}} className={tl.hour} onClick={(e)=>this.addSchedule(e,date,hour)} id={id} 
             onMouseEnter={()=>this.handleMouseEnter()} onMouseLeave={()=>this.handleMouseLeave()}>
+                &nbsp;
                 {isOpen && <Popup
                     date={date}
                     hour={hour}
                     handleClose={this.addSchedule}
                 />}
-            </td>
+            </div>
         )
     }
 }
@@ -157,7 +244,19 @@ class Popup extends Component{
     }
 
 }
-  
+
+
+// class Schedule extends Component{
+//     render(){
+//         const {schedule}=this.props
+//         return(
+//             <div style={schedule.style}>
+//                 <div>{schedule.deatils.info}</div>
+//             </div>
+//         )
+//     }
+// }
+
 /*  horizental timeline
      <table className={tl.tab}>
             <thead>

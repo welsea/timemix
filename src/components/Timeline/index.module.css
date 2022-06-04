@@ -2,42 +2,48 @@
     width: 99%;
     margin: auto;
     margin-top: 10px;
-}
-table, th,td{
-    border:1px solid #f6f6f6;
-    border-collapse: collapse;
-    
+    display: flex;
+
 }
 
-table{
-    width: 100%;
-}
-
-th{
-    height: 2em;
-    width: 14%;
+.title{
     background-color: #fad783;
-    color: #896306;;
+    color: #896306;
+    height: 2em;
+    text-align: center;
+    line-height: 2em;
 }
 
-td{
-    height: 1.5em;
-    font-size: 12px;
+.columns{
+    width: 14%;
+    display: flex;
+    flex-direction: column;
 }
 
-/* .vth {  
-    width: 40px;
-    text-align: left;
-  } */
-  thead tr th:first-child,
-  tbody tr td:first-child {
-    width: 1em;
-    min-width: 1em;
-    max-width: 1em;
+
+.numClo{
+    width: 2em;
+    min-width: 2em;
+    max-width: 2em;
     text-align: center;
     background-color: #fad783;
     color: #896306;
-  }
+}
+
+.num,.hour {
+    font-size: 12px;
+    height: 2em;
+    text-align: center;
+    line-height: 2em;
+    border-bottom: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+/* .hour{
+    font-size: 12px;
+    height: 2em;
+    text-align: center;
+    line-height: 2em;
+} */
   /* Popup style */
 .popup_box {
     position: fixed;
@@ -74,4 +80,8 @@ td{
     margin: 0 0 0 2em;
     padding: 0.3em 1em;
     color: white;
+  }
+
+  .ss{
+      position: absolute;
   }
