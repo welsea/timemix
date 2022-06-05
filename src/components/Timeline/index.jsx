@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import tl from './index.module.css'
-
+import Weekday from '../Weekday'
 
 export default class TimeLine extends Component {
     state={
@@ -51,6 +51,7 @@ export default class TimeLine extends Component {
         isOpen:false,
         post_schedules:Array(7).fill(null),
     }
+    
     componentDidMount(){
         this.getDate()
         this.showExits()
@@ -74,9 +75,9 @@ export default class TimeLine extends Component {
     showExits=()=>{
         const {schedules}=this.state
         for (const schedule of schedules)
-            this.shwoSchedule(schedule)
-        
+            this.shwoSchedule(schedule)  
     }
+
     shwoSchedule=(schedule)=>{
         // merge all the cell in the period
         // change color and shows all the details
@@ -91,7 +92,6 @@ export default class TimeLine extends Component {
         let end_m=parseFloat(schedule.end.split(":")[1])/60
         let start_id=schedule.weekday+"-"+start_h
         let end_id=schedule.weekday+"-"+end_h
-
 
         let width=document.getElementById(end_id).offsetWidth
         let height=document.getElementById(end_id).offsetHeight
@@ -136,161 +136,3 @@ export default class TimeLine extends Component {
     )
   }
 }
-
-class Weekday extends Component{
-    state={
-        hours:25,
-    }
-    test=()=>{
-        console.log(this.props.schedule[0].bcolor)
-    }
-    render(){
-        const {day}=this.props
-        const {schedule}=this.props
-        const {title}=this.props
-        const {hours}=this.state
-        return(
-            <div className={day!=="not"? tl.columns:tl.numClo}>
-                {
-                    [...Array(hours)].map((e,hour)=>{
-                        if(day==="not"){
-                            if(hour===0) return <div key={day+"-"+hour} style={{height:"2em",backgroundColor:"#fad783"}}>&nbsp;</div>
-                            else return <div className={tl.num} key={day+hour}>{hour}</div>
-                        } 
-                        else if(hour===0) return <div key={day+"-"+hour} className={tl.title}>{title}</div>
-                        else return <Square  key={day+"-"+hour} id={day+"-"+(hour)} hour={hour}> </Square>
-                    })
-                }
-                {
-                    day!=="not"&&schedule&&schedule.map((item,i)=>{
-                        return <Schedule schedule={item} key={"schedule-"+day+"-"+i}/>
-                    })
-                }             
-            </div>
-        )
-    }
-}
-
-class Schedule extends Component{
-    render(){
-        const {schedule}=this.props
-        return(
-            <div className={tl.ss} style={schedule.style}>
-                <div className={tl.start_time}>{schedule.start}</div>
-                <div className={tl.end_time}>{schedule.end}</div>
-                <div className={tl.info}>infoinfoinfo</div>
-            </div>
-        )
-    }
-}
-class Square extends Component{
-    // each square in timeline table
-    state={
-        isOpen:false,
-        mouse:false,
-    }
-    // add schedule box popup
-    addSchedule=()=> { 
-        const {isOpen}=this.state
-        this.setState(
-            {isOpen:!isOpen}
-        )
-    }
-    // hover css
-    handleMouseEnter=()=>{
-        // const {mouse}=this.state
-        this.setState(
-          {mouse:true}
-        )
-    }
-    handleMouseLeave=()=>{
-        // const {mouse}=this.state
-        this.setState(
-          {mouse:false}
-        )
-    }
-    render (){
-        const {date}=this.props
-        const {hour}=this.props
-        const {id}=this.props
-        const {isOpen}=this.state
-        const {mouse}=this.state
-        return(
-            <div style={{backgroundColor:mouse? '#ddd':'white'}} className={tl.hour} onClick={(e)=>this.addSchedule(e,date,hour)} id={id} 
-            onMouseEnter={()=>this.handleMouseEnter()} onMouseLeave={()=>this.handleMouseLeave()}>
-                &nbsp;
-                {isOpen && <Popup
-                    date={date}
-                    hour={hour}
-                    handleClose={this.addSchedule}
-                />}
-            </div>
-        )
-    }
-}
-
-class Popup extends Component{
-    handleClose=()=>{
-        this.props.handleClose()
-    }
-    render(){
-        const {date}=this.props
-        const {hour}=this.props
-        return (
-            <div className={tl.popup_box}>
-              <div className={tl.box}>
-              <h2>Add Schedule</h2>
-                <div>{date+hour}</div>
-                <div className={tl.btn}>
-                    <button onClick={this.handleClose} >Cancel</button>
-                    <button className={tl.addBtn}>Add</button>
-                </div>
-              </div>
-            </div>
-          );
-    }
-
-}
-
-
-// class Schedule extends Component{
-//     render(){
-//         const {schedule}=this.props
-//         return(
-//             <div style={schedule.style}>
-//                 <div>{schedule.deatils.info}</div>
-//             </div>
-//         )
-//     }
-// }
-
-/*  horizental timeline
-     <table className={tl.tab}>
-            <thead>
-                <tr>
-                    <th></th>
-                    {
-                        hours.map((hour)=>{
-                            return <th key={hour}>{hour}</th>
-                        })
-                    }
-                </tr>   
-            </thead>
-            <tbody>
-                {
-                    days.map((day)=>{
-                        return(
-                            <tr key={day}>
-                                {
-                                    [""].concat(hours).map((hour,i)=>{
-                                        if(i===0) return <th className={tl.vth} key={hour}>{day}.</th>
-                                        else return <td key={day}></td>
-                                    })
-                                }
-                            </tr>
-                        ) 
-                    })
-                }
-            </tbody>
-        </table> 
- */

@@ -1,0 +1,53 @@
+.title{
+    background-color: #fad783;
+    color: #896306;
+    height: 2em;
+    text-align: center;
+    line-height: 2em;
+}
+
+.columns{
+    width: 14%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.numClo{
+    width: 2em;
+    min-width: 2em;
+    max-width: 2em;
+    text-align: center;
+    background-color: #fad783;
+    color: #896306;
+}
+
+.num,.hour {
+    font-size: 12px;
+    height: 2em;
+    text-align: center;
+    line-height: 2em;
+    border-bottom: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+  
+.ss{
+    position: absolute;
+}
+.start_time{
+  position: absolute;
+  font-size: 0.7em;
+  top: -0.5em;
+  left: 0;
+}
+.end_time{
+  position: absolute;
+  font-size: 0.7em;
+  bottom: -0.5em;
+  right: 0;
+}
+.info{
+  text-align: center;
+  padding: 0.5em 0.5em;
+  color:white;
+}
