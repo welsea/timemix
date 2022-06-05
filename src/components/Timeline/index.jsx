@@ -6,13 +6,13 @@ export default class TimeLine extends Component {
     state={
         schedules:[
             {
-                start:"15:30",
-                end:"18:30",
+                start:"15:15",
+                end:"18:45",
                 timezone:-2,
                 type:"work",
                 info:'infoinfoinfo',
                 date:"3.5",
-                weekday:5,
+                weekday:1,
                 year:"2022",
                 shareWith:[
                     {
@@ -41,9 +41,9 @@ export default class TimeLine extends Component {
             }
         ],
         colors:{
-            "work":"#91AD70",
-            "life":"#89916B",
-            "other":"#69B0AC"
+            work:"#91AD70",
+            life:"#89916B",
+            other:"#69B0AC"
         },
         hours:24,
         days:['Mon','Tue','Wed','Thur','Fri','Sat','Sun'],
@@ -86,24 +86,27 @@ export default class TimeLine extends Component {
         const {colors}=this.state
         // format: Sat Jun 04 2022 15:07:40 GMT+0200 (Central European Summer Time)
         let start_h=parseInt(schedule.start.split(":")[0])
-        let start_m=parseInt(schedule.start.split(":")[1])
+        let start_m=parseFloat(schedule.start.split(":")[1])/60
         let end_h=parseInt(schedule.end.split(":")[0])
-        let end_m=parseInt(schedule.end.split(":")[0])
+        let end_m=parseFloat(schedule.end.split(":")[1])/60
         let start_id=schedule.weekday+"-"+start_h
         let end_id=schedule.weekday+"-"+end_h
 
-        let top=document.getElementById(start_id).offsetTop
+
         let width=document.getElementById(end_id).offsetWidth
         let height=document.getElementById(end_id).offsetHeight
-
-        let totalh=height*(end_h-start_h-1)+(start_m*height)+(end_m*height)
-        let post_schedule={
-            "width":width+"px",
-            "height":totalh+"px",
-            "bcolor":colors[schedule.type],
-            "top":top+"px",
-            "info":schedule.info,
+        let top=(document.getElementById(start_id).offsetTop)-((1-start_m)*height)
+        let totalh=(height*(end_h-start_h-start_m+end_m)).toFixed(2)
+        let stylecss={
+            width:width+"px",
+            height:totalh+"px",
+            backgroundColor:colors[schedule.type],
+            top:top+height+"px",
         }
+        let post_schedule={
+            style:stylecss,
+        }
+        post_schedule=Object.assign(post_schedule,schedule)
         // post_schedules[1].push(post_schedule)
         if(post_schedules[schedule.weekday]===null)
             post_schedules[schedule.weekday]=[post_schedule]
@@ -139,7 +142,7 @@ class Weekday extends Component{
         hours:25,
     }
     test=()=>{
-        console.log(this.props.schedule)
+        console.log(this.props.schedule[0].bcolor)
     }
     render(){
         const {day}=this.props
@@ -159,7 +162,9 @@ class Weekday extends Component{
                     })
                 }
                 {
-                    day!=="not"&&schedule&&<Schedule schedule={schedule} style={{backgroundColor:schedule.bcolor,top:"437px"}} />
+                    day!=="not"&&schedule&&schedule.map((item,i)=>{
+                        return <Schedule schedule={item} key={"schedule-"+day+"-"+i}/>
+                    })
                 }             
             </div>
         )
@@ -170,8 +175,10 @@ class Schedule extends Component{
     render(){
         const {schedule}=this.props
         return(
-            <div className={tl.ss} style={this.props.style}>
-                <div>infoinfoinfo</div>
+            <div className={tl.ss} style={schedule.style}>
+                <div className={tl.start_time}>{schedule.start}</div>
+                <div className={tl.end_time}>{schedule.end}</div>
+                <div className={tl.info}>infoinfoinfo</div>
             </div>
         )
     }
