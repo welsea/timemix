@@ -11,7 +11,7 @@ export default class TimeLine extends Component {
                 timezone:-2,
                 type:"work",
                 info:'infoinfoinfo',
-                date:"3.5",
+                date:"6.5",
                 weekday:1,
                 year:"2022",
                 shareWith:[
@@ -32,7 +32,7 @@ export default class TimeLine extends Component {
                 timezone:0,
                 type:"life",
                 info:'infoinfoinfo',
-                date:"4.5",
+                date:"11.5",
                 weekday:6,
                 year:"2022",
                 shareWith:[],
@@ -51,7 +51,7 @@ export default class TimeLine extends Component {
         isOpen:false,
         post_schedules:Array(7).fill(null),
     }
-    
+
     componentDidMount(){
         this.getDate()
         this.showExits()
@@ -61,9 +61,11 @@ export default class TimeLine extends Component {
         const {dates}=this.state
         const current = new Date();     // get current date   
         const month=current.getMonth() 
-        const weekstart = current.getDate() - current.getDay() +2; 
+        const weekstart = current.getDate() - current.getDay()+1; 
+        
         for (const i in dates) {
-            var tmp=(new Date(current.setDate(weekstart+i))).getDate();
+            let tmpd=weekstart+parseInt(i)
+            var tmp=(new Date(current.setDate(tmpd))).getDate();
             dates[i]=tmp+"."+month
         }              
         this.setState(
