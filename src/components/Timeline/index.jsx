@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 import tl from './index.module.css'
 import Weekday from '../Weekday'
 
+
+/**
+ * todo：
+ * []- schedules given by weeks, only need to match the weekday.
+ * 
+ */
 export default class TimeLine extends Component {
     state={
         schedules:[
@@ -120,9 +126,7 @@ export default class TimeLine extends Component {
         })
     }
   render() {
-      const {days}=this.state
-      const {dates}=this.state
-      const {post_schedules}=this.state
+      const {days,dates,post_schedules}=this.state
     return (
       <div className={tl.layout}>
             {
