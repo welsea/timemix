@@ -16,7 +16,6 @@
     margin-top: calc(100vh - 85vh - 20px);
     background: #fff;
     border-radius: 4px;
-    padding: 20px;
     border: 1px solid #999;
     overflow: auto;
   }
@@ -27,10 +26,50 @@
 }
 .addBtn{
   background-color: #E98B2A;
-  border: 1px solid white;
-  border-radius: 4px;
-  margin: 4em;
-  margin: 0 0 0 2em;
-  padding: 0.3em 1em;
+  padding: 0.5em 1em;
   color: white;
+  text-align: center;
+  font-weight: 600;
+}
+.closediv{
+  background: antiquewhite;
+    text-align: right;
+}
+.close{
+  background:none;
+  border: none;
+}
+.table{
+  width:100%;
+  padding:0 20px;
+}
+.table input{
+  width:60%;
+  border-style: none none solid none;
+  border-width: 1px;
+  padding: 0.5em 0.1em;
+}
+.table textarea{
+  width:60%;
+  padding: 0.5em 0.1em;
+}
+.table tr{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 1em;
+}
+.table td:first-child{
+  font-weight: 700;
+}
+.table select{
+  padding: 0.5em;
+    margin: 0.2em 0;
+    border: 1px solid #c4c1c1;
+}
+.date{
+  font-size: 13px;
+  padding: 0.5em 1em;
+  text-decoration: underline;
+  text-align: right;
 }

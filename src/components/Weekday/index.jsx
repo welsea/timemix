@@ -7,13 +7,13 @@ export default class Weekday extends Component {
         hours:25,
     }
     render(){
-        const {day,schedule,title}=this.props
+        const {day,date,schedule,title}=this.props
         const {hours}=this.state
         return(
             <div className={day!=="not"? wk.columns:wk.numClo}>
                 {
                     day!=="not"&&schedule&&schedule.map((item,i)=>{
-                        return <Schedule schedule={item} key={"schedule-"+day+"-"+i}></Schedule>
+                        return <Schedule day={day} date={date} schedule={item} key={"schedule-"+day+"-"+i}></Schedule>
                     })
                 }  
                 {
@@ -23,7 +23,7 @@ export default class Weekday extends Component {
                             else return <div className={wk.num} key={day+hour}>{hour}</div>
                         } 
                         else if(hour===0) return <div key={day+"-"+hour} className={wk.title}>{title}</div>
-                        else return <Square  key={day+"-"+hour} id={day+"-"+(hour)} hour={hour}> </Square>
+                        else return <Square  key={day+"-"+hour} day={day} date={date} id={day+"-"+(hour)} hour={hour}> </Square>
                     })
                 }           
             </div>
@@ -32,46 +32,62 @@ export default class Weekday extends Component {
 }
 
 class Schedule extends Component{
-    state={
-        type:1,
-        isOpen:false,
+    constructor(props){
+        super(props);
+        this.state={
+            type:1,
+            isOpen:false,
+        }
     }
-    editSchedule=()=> { 
-        const {isOpen}=this.state
+    popUp=(is)=> { 
+        // const {isOpen}=this.state
         this.setState(
-            {isOpen:!isOpen}
+            {isOpen:is}
         )
     }
-
+    // editSchedule=(id,s)=>{
+    //     this.props.editSchedule(id,s)
+    // }
     render(){
-        const {schedule}=this.props
+        const {schedule,day,date,editSchedule}=this.props
         const {type,isOpen}=this.state
+        const hour=schedule.start.split(":")[0]
         return(
-            <div className={wk.ss} style={schedule.style} onClick={this.editSchedule}>
+            <>
+                <div className={wk.ss} style={schedule.style} onClick={()=>this.popUp(true)}>
+                    <div className={wk.start_time}>{schedule.start}</div>
+                    <div className={wk.end_time}>{schedule.end}</div>
+                    <div className={wk.info}>infoinfoinfo</div>
+                </div>
                 {isOpen && <PopBox
-                    type={type}
-                    content={schedule}
-                    handleClose={this.editSchedule}
+                        stype={type}
+                        day={day}
+                        date={date}
+                        hour={hour}
+                        schedule={schedule}
+                        operate={this.popUp}
+                        editSchedule={editSchedule}
                 />}
-                <div className={wk.start_time}>{schedule.start}</div>
-                <div className={wk.end_time}>{schedule.end}</div>
-                <div className={wk.info}>infoinfoinfo</div>
-            </div>
+            </>
+
         )
     }
 }
 class Square extends Component{
-    // each hour in timeline table
-    state={
-        isOpen:false,
-        mouse:false,
-        type:0
+    constructor(props){
+        super(props);
+        this.state={
+            isOpen:false,
+            mouse:false,
+            type:0
+        }
     }
+    // each hour in timeline table
 
-    addSchedule=()=> { 
-        const {isOpen}=this.state
+    popUp=(is)=> { 
+        // const {isOpen}=this.state
         this.setState(
-            {isOpen:!isOpen}
+            {isOpen:is}
         )
     }
     // hover css
@@ -85,22 +101,27 @@ class Square extends Component{
           {mouse:false}
         )
     }
-    test=() => { 
-        console.log("active")
-     }
+    addSchedule=(id,news)=>{
+        this.props.addSchedule(id,news)
+    }
     render (){
-        const {date,hour,id}=this.props
+        const {date,hour,id,day}=this.props
         const {isOpen,mouse,type}=this.state
         return(
-            <div style={{backgroundColor:mouse? '#ddd':'white'}} className={wk.hour} onClick={this.addSchedule} id={id} 
-            onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-                &nbsp;
+            <>
+                <div style={{backgroundColor:mouse? '#ddd':'white'}} className={wk.hour} onClick={(e)=>this.popUp(e,true)} id={id} 
+                onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
+                    &nbsp;
+                </div>
                 {isOpen && <PopBox
-                    type={type}
-                    content={{date:date,hour:hour}}
-                    handleClose={this.addSchedule}
-                />}
-            </div>
+                        stype={type}
+                        date={date}
+                        day={day}
+                        hour={hour}
+                        operate={this.popUp}
+                        addSchedule={this.addSchedule}
+                    />}
+            </>
         )
     }
 }

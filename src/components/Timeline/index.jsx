@@ -9,54 +9,59 @@ import Weekday from '../Weekday'
  * 
  */
 export default class TimeLine extends Component {
-    state={
-        schedules:[
-            {
-                start:"15:15",
-                end:"18:45",
-                timezone:-2,
-                type:"work",
-                info:'infoinfoinfo',
-                date:"6.5",
-                weekday:1,
-                year:"2022",
-                shareWith:[
-                    {
-                        name:'tom',
-                        comment:'Tom\'s COMMENT'
-                },
-                    {
-                        name:'jerry',
-                        comment:"Jerry's comment"
-                    }
-                ],
-                publicity:true,
-                owner:"uid2231"
-            },{
-                start:"12:30",
-                end:"17:30",
-                timezone:0,
-                type:"life",
-                info:'infoinfoinfo',
-                date:"11.5",
-                weekday:6,
-                year:"2022",
-                shareWith:[],
-                publicity:false,
-                owner:"uid1223"
-            }
-        ],
-        colors:{
-            work:"#91AD70",
-            life:"#89916B",
-            other:"#69B0AC"
-        },
-        hours:24,
-        days:['Mon','Tue','Wed','Thur','Fri','Sat','Sun'],
-        dates:Array(7).fill(null),
-        isOpen:false,
-        post_schedules:Array(7).fill(null),
+    constructor(props){
+        super(props)
+        this.state={
+            schedules:[
+                {
+                    start:"15:15",
+                    end:"18:45",
+                    timezone:-2,
+                    type:0,
+                    info:'infoinfoinfo',
+                    date:"6.5",
+                    weekday:1,
+                    year:"2022",
+                    shareWith:[
+                        {
+                            name:'tom',
+                            comment:'Tom\'s COMMENT'
+                    },
+                        {
+                            name:'jerry',
+                            comment:"Jerry's comment"
+                        }
+                    ],
+                    display:1,
+                    id:"63282dgwyw738"
+                },{
+                    start:"12:30",
+                    end:"17:30",
+                    timezone:0,
+                    type:2,
+                    info:'infoinfoinfo',
+                    date:"11.5",
+                    weekday:6,
+                    year:"2022",
+                    shareWith:[],
+                    display:1,
+                    owner:"uid1223",
+                    id:"73294727hdhhss"
+                }
+            ],
+            colors:{
+                0:"#91AD70",
+                1:"#89916B",
+                2:"#69B0AC"
+            },
+            hours:24,
+            days:['Mon','Tue','Wed','Thur','Fri','Sat','Sun'],
+            dates:Array(7).fill(null),
+            isOpen:false,
+            post_schedules:Array(7).fill(null),
+        }
     }
+
 
     componentDidMount(){
         this.getDate()
@@ -125,6 +130,24 @@ export default class TimeLine extends Component {
             post_schedules:post_schedules
         })
     }
+    editSchedule=(id,s)=>{
+        const {schedules}=this.state
+        const tmps=schedules.filter((item)=>{
+            return item.id!==id
+          })
+        s.id=id
+        tmps.push(s)
+        this.setState(
+            {schedules:tmps}
+        )
+    }
+    addSchedule=(id,news)=>{
+        const {schedules}=this.state
+        news.id=id
+        this.setState(
+            {schedules:[news,...schedules]}
+        )
+    }
   render() {
       const {days,dates,post_schedules}=this.state
     return (
@@ -133,9 +156,10 @@ export default class TimeLine extends Component {
                 [""].concat(days).map((day,i)=>{
                     if(i===0) return <Weekday key={"num"} day={"not"}></Weekday>
                     else{
-                        if(post_schedules[i]) return <Weekday key={day} title={day+". "+dates[i-1]} day={i} schedule={post_schedules[i]}></Weekday>
-                        return <Weekday key={day} title={day+". "+dates[i-1]} 
-                                        day={i} schedule={false}></Weekday>} 
+                        if(post_schedules[i]) return <Weekday key={day} title={day+". "+dates[i-1]} day={i} date={dates[i-1]} 
+                                                                schedule={post_schedules[i]} editSchedule={this.editSchedule} addSchedule={this.addSchedule}></Weekday>
+                        return <Weekday key={day} title={day+". "+dates[i-1]} day={i} date={dates[i-1]} schedule={false}  
+                        editSchedule={this.editSchedule} addSchedule={this.addSchedule}></Weekday>} 
                 })
             }
       </div>
