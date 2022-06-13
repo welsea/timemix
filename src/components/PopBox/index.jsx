@@ -12,14 +12,13 @@ export default class PopBox extends Component {
             isSelect:false,
             endh:parseInt(this.props.hour),
             endm:"00",
+            startm:"00",
             endp:Array(24-parseInt(this.props.hour)).fill(""),
-            isPublic:false,
             start:"",
             end:"",
             type:"",
             info:"",
             shareWith:[],
-            display:true,
             title:"",
         }
     }
@@ -31,15 +30,16 @@ export default class PopBox extends Component {
             const {schedule}=this.props
             const {m}=this.state
             const i=m.indexOf(schedule.end.split(":")[1])
+            const si=m.indexOf(schedule.start.split(":")[1])
             this.setState({
                 start:schedule.start,
                 end:schedule.end,
                 type:schedule.type,
                 info:schedule.info,
                 shareWith:schedule.shareWith,
-                display:schedule.display,
                 endh:parseInt(schedule.end.split(":")[0]),
-                endm:m[i-1]
+                endm:m[i-1],
+                startm:m[si],
             })
         }else{
             const {hour}=this.props
@@ -47,7 +47,6 @@ export default class PopBox extends Component {
                 start:hour+":00",
                 end:hour+":15",
                 type:0,
-                display:0,
             })
         }
     }
@@ -76,18 +75,6 @@ export default class PopBox extends Component {
             {end:e.target.value}
         )
     }
-    handleDisplay=(e)=>{
-        let ispub
-        if(e.target.value==="1"){
-            ispub=true
-        }
-        this.setState(
-            {
-                isPublic:ispub,
-                display:e.target.value
-            }
-        )
-    }
     handleType=(e)=>{
         this.setState(
             {type:e.target.value}
@@ -103,25 +90,28 @@ export default class PopBox extends Component {
         }
     }
     handleConfirm=()=>{
-        const {start,end,type,info,shareWith,display,title}=this.state
+        const {start,end,type,info,shareWith,title}=this.state
+        const {schedule,stype,addSchedule,editSchedule,date,day,operate}=this.props
         const new_id=nanoid()
-        const news={
+        const s={
             start:start,
             end:end,
             type:type,
             info:info,
             shareWith:shareWith,
-            display:display,
             title:title,
+            date:date,
+            day:day
         }
-        if(this.props.stype===0){
-            this.props.addSchedule(new_id,news)
+        if(stype===0){
+            addSchedule(new_id,s)
         }else{
-            this.props.editSchedule(this.props.schedule.id,news)
+            editSchedule(schedule.id,s)
         }
+        operate(false)
     }
     render(){
-        const {endh,endm,m,endp,isPublic,days,mon,display,type,info}=this.state
+        const {endh,endm,m,endp,days,mon,type,info,startm}=this.state
         const {stype,date,day}=this.props
         const hour=parseInt(this.props.hour)
         const showM=parseInt(date.split(".")[1])
@@ -148,7 +138,11 @@ export default class PopBox extends Component {
                         <td><select name="start_time" id="start_time" onChange={(e)=>this.startChange(e)}>
                             {
                                 [...Array(24-hour)].map((x,i)=>{
-                                    return m.map((y,j)=>{
+                                    if(i===0&&startm!=="00"){
+                                        return m.slice(m.indexOf(startm)).map((y,j)=>{
+                                            return <option key={(i+hour)+":"+y} value={(i+hour)+":"+y}>{(i+hour)+":"+y}</option>
+                                        })
+                                    }else return m.map((y,j)=>{
                                         return <option key={(i+hour)+":"+y} value={(i+hour)+":"+y}>{(i+hour)+":"+y}</option>
                                     })
                                 })
@@ -167,17 +161,9 @@ export default class PopBox extends Component {
                             }
                         </select></td>
                     </tr>
-                    <tr><td>Display:</td>
-                        <td><select value={display} name="display" id="display" onChange={(e)=>this.handleDisplay(e)}>
-                            <option value="0">Private</option>
-                            <option value="1">Public</option>
-                        </select></td>
+                    <tr><td>Share With:</td>
+                        <td><input placeholder='Input ID, multiple ID separate by ",",press Enter to finish.' onKeyUp={(e)=>this.handleShare(e)}/></td>
                     </tr>
-                    {
-                        isPublic&&<tr><td>Share With:</td>
-                            <td><input placeholder='Input ID, multiple ID separate by ",",press Enter to finish.' onKeyUp={(e)=>this.handleShare(e)}/></td>
-                        </tr>
-                    }
                     <tr><td>Info:</td>
                         <td><textarea defaultValue={info}></textarea></td>
                     </tr>

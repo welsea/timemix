@@ -7,13 +7,13 @@ export default class Weekday extends Component {
         hours:25,
     }
     render(){
-        const {day,date,schedule,title}=this.props
+        const {day,date,schedule,title,editSchedule,addSchedule}=this.props
         const {hours}=this.state
         return(
             <div className={day!=="not"? wk.columns:wk.numClo}>
                 {
                     day!=="not"&&schedule&&schedule.map((item,i)=>{
-                        return <Schedule day={day} date={date} schedule={item} key={"schedule-"+day+"-"+i}></Schedule>
+                        return <Schedule day={day} date={date} schedule={item} editSchedule={editSchedule} key={"schedule-"+day+"-"+i}></Schedule>
                     })
                 }  
                 {
@@ -23,7 +23,7 @@ export default class Weekday extends Component {
                             else return <div className={wk.num} key={day+hour}>{hour}</div>
                         } 
                         else if(hour===0) return <div key={day+"-"+hour} className={wk.title}>{title}</div>
-                        else return <Square  key={day+"-"+hour} day={day} date={date} id={day+"-"+(hour)} hour={hour}> </Square>
+                        else return <Square addSchedule={addSchedule} key={day+"-"+hour} day={day} date={date} id={day+"-"+(hour)} hour={hour}> </Square>
                     })
                 }           
             </div>
@@ -45,9 +45,6 @@ class Schedule extends Component{
             {isOpen:is}
         )
     }
-    // editSchedule=(id,s)=>{
-    //     this.props.editSchedule(id,s)
-    // }
     render(){
         const {schedule,day,date,editSchedule}=this.props
         const {type,isOpen}=this.state
@@ -101,11 +98,8 @@ class Square extends Component{
           {mouse:false}
         )
     }
-    addSchedule=(id,news)=>{
-        this.props.addSchedule(id,news)
-    }
     render (){
-        const {date,hour,id,day}=this.props
+        const {date,hour,id,day,addSchedule}=this.props
         const {isOpen,mouse,type}=this.state
         return(
             <>
@@ -119,7 +113,7 @@ class Square extends Component{
                         day={day}
                         hour={hour}
                         operate={this.popUp}
-                        addSchedule={this.addSchedule}
+                        addSchedule={addSchedule}
                     />}
             </>
         )

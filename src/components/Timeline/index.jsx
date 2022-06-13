@@ -32,7 +32,6 @@ export default class TimeLine extends Component {
                             comment:"Jerry's comment"
                         }
                     ],
-                    display:1,
                     id:"63282dgwyw738"
                 },{
                     start:"12:30",
@@ -44,7 +43,6 @@ export default class TimeLine extends Component {
                     weekday:6,
                     year:"2022",
                     shareWith:[],
-                    display:1,
                     owner:"uid1223",
                     id:"73294727hdhhss"
                 }
@@ -61,8 +59,6 @@ export default class TimeLine extends Component {
             post_schedules:Array(7).fill(null),
         }
     }
-
-
     componentDidMount(){
         this.getDate()
         this.showExits()
@@ -132,14 +128,22 @@ export default class TimeLine extends Component {
     }
     editSchedule=(id,s)=>{
         const {schedules}=this.state
-        const tmps=schedules.filter((item)=>{
-            return item.id!==id
-          })
-        s.id=id
-        tmps.push(s)
+        let temps = schedules.map(item => 
+            {
+              if (item.id === id){
+                return {...item, info: s.info,start:s.start,end:s.end,title:s.title,shareWith:s.shareWith,type:s.type}; //gets everything that was already in item, and updates "done"
+              }
+              return item; // else return unmodified item 
+            });
         this.setState(
-            {schedules:tmps}
+            {schedules:temps}
         )
+        this.showExits()
+        this.showExits()
+        console.log(temps)
+        console.log(schedules)
+
+
     }
     addSchedule=(id,news)=>{
         const {schedules}=this.state
@@ -147,6 +151,7 @@ export default class TimeLine extends Component {
         this.setState(
             {schedules:[news,...schedules]}
         )
+        this.showExits()
     }
   render() {
       const {days,dates,post_schedules}=this.state
@@ -156,10 +161,8 @@ export default class TimeLine extends Component {
                 [""].concat(days).map((day,i)=>{
                     if(i===0) return <Weekday key={"num"} day={"not"}></Weekday>
                     else{
-                        if(post_schedules[i]) return <Weekday key={day} title={day+". "+dates[i-1]} day={i} date={dates[i-1]} 
-                                                                schedule={post_schedules[i]} editSchedule={this.editSchedule} addSchedule={this.addSchedule}></Weekday>
-                        return <Weekday key={day} title={day+". "+dates[i-1]} day={i} date={dates[i-1]} schedule={false}  
-                        editSchedule={this.editSchedule} addSchedule={this.addSchedule}></Weekday>} 
+                        return <Weekday key={day} title={day+". "+dates[i-1]} day={i} date={dates[i-1]} schedule={post_schedules[i]?post_schedules[i]:false}  
+                        addSchedule={this.addSchedule} editSchedule={this.editSchedule}></Weekday>} 
                 })
             }
       </div>
