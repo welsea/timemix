@@ -55,15 +55,21 @@ export default class TimeLine extends Component {
             hours:24,
             days:['Mon','Tue','Wed','Thur','Fri','Sat','Sun'],
             dates:Array(7).fill(null),
-            isOpen:false,
             post_schedules:Array(7).fill(null),
+            hey:"hey"
         }
     }
     componentDidMount(){
         this.getDate()
         this.showExits()
     }
-    
+    test=(h)=>{
+        const {hey}=this.state
+        this.setState({
+            hey:h
+        })
+        console.log(hey)
+    }
     getDate=()=>{
         const {dates}=this.state
         const current = new Date();     // get current date   
@@ -127,23 +133,21 @@ export default class TimeLine extends Component {
         })
     }
     editSchedule=(id,s)=>{
-        const {schedules}=this.state
-        let temps = schedules.map(item => 
-            {
-              if (item.id === id){
-                return {...item, info: s.info,start:s.start,end:s.end,title:s.title,shareWith:s.shareWith,type:s.type}; //gets everything that was already in item, and updates "done"
-              }
-              return item; // else return unmodified item 
-            });
-        this.setState(
-            {schedules:temps}
-        )
-        this.showExits()
-        this.showExits()
-        console.log(temps)
-        console.log(schedules)
-
-
+        // const {schedules}=this.state
+        // let temps = schedules.map(item => 
+        //     {
+        //       if (item.id === id){
+        //         return {...item, info: s.info,start:s.start,end:s.end,title:s.title,shareWith:s.shareWith,type:s.type}; //gets everything that was already in item, and updates "done"
+        //       }
+        //       return item; // else return unmodified item 
+        //     });
+        // this.setState(
+        //     {schedules:temps}
+        // )
+        // this.showExits()
+        // this.showExits()
+        // console.log(temps)
+        // console.log(schedules)
     }
     addSchedule=(id,news)=>{
         const {schedules}=this.state
@@ -152,6 +156,7 @@ export default class TimeLine extends Component {
             {schedules:[news,...schedules]}
         )
         this.showExits()
+        console.log(schedules)
     }
   render() {
       const {days,dates,post_schedules}=this.state
