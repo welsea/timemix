@@ -16,12 +16,9 @@ export default class TimeLine extends Component {
                 {
                     start:"15:15",
                     end:"18:45",
-                    timezone:-2,
                     type:0,
                     info:'infoinfoinfo',
-                    date:"6.5",
                     weekday:1,
-                    year:"2022",
                     shareWith:[
                         {
                             name:'tom',
@@ -36,14 +33,10 @@ export default class TimeLine extends Component {
                 },{
                     start:"12:30",
                     end:"17:30",
-                    timezone:0,
                     type:2,
                     info:'infoinfoinfo',
-                    date:"11.5",
                     weekday:6,
-                    year:"2022",
                     shareWith:[],
-                    owner:"uid1223",
                     id:"73294727hdhhss"
                 }
             ],

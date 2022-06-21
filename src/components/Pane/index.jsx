@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import TimeLine from '../Timeline'
-import DatePick from '../DatePick'
+import Tools from '../Tools'
 export default class Pane extends Component {
   render() {
     return (
       <>
-        <DatePick />
-          <TimeLine />
+        <Tools />
+        <TimeLine />
       </>
     )
   }
