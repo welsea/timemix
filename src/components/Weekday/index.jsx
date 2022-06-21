@@ -7,12 +7,12 @@ export default class Weekday extends Component {
         hours:25,
     }
     render(){
-        const {day,date,schedule,title,editSchedule,addSchedule}=this.props
+        const {day,date,schedules,title,editSchedule,addSchedule}=this.props
         const {hours}=this.state
         return(
             <div className={day!=="not"? wk.columns:wk.numClo}>
                 {
-                    day!=="not"&&schedule&&schedule.map((item,i)=>{
+                    day!=="not"&&schedules&&schedules.map((item,i)=>{
                         return <Schedule day={day} date={date} schedule={item} editSchedule={editSchedule} key={"schedule-"+day+"-"+i}></Schedule>
                     })
                 }  
@@ -70,6 +70,8 @@ class Schedule extends Component{
         )
     }
 }
+
+ // each hour in timeline table
 class Square extends Component{
     constructor(props){
         super(props);
@@ -79,8 +81,6 @@ class Square extends Component{
             type:0
         }
     }
-    // each hour in timeline table
-
     popUp=(is)=> { 
         // const {isOpen}=this.state
         this.setState(
