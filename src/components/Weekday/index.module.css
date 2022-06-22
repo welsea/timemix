@@ -1,4 +1,4 @@
-.title{
+.date{
     background-color: #fad783;
     color: #896306;
     height: 2em;
@@ -39,15 +39,24 @@
   font-size: 0.7em;
   top: -0.5em;
   left: 0;
+  font-style: italic
 }
 .end_time{
   position: absolute;
   font-size: 0.7em;
   bottom: -0.5em;
   right: 0;
+  font-style: italic
 }
 .info{
-  text-align: center;
+  text-align: left;
   padding: 0.5em 0.5em;
   color:white;
+  font-size: 12px;
+}
+
+.title{
+  color: white;
+  text-align: left;
+  padding: 10px 5px 0;
 }

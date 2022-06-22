@@ -5,14 +5,57 @@ import PopBox from '../PopBox'
 export default class Weekday extends Component {
     state={
         hours:25,
+        schedulesWithStyle:[],
+        colors:{
+            0:"#91AD70",
+            1:"#89916B",
+            2:"#69B0AC"
+        },
+    }
+    componentDidMount(){
+        this.showExist()
+    }
+    showExist(){
+        const {schedules}=this.props
+        if (schedules){
+            const newss=schedules.map((s)=>{
+                s.style=this.getStyle(s)
+                return s
+            })
+            this.setState({schedulesWithStyle:newss})
+        }
+    }
+    getStyle(schedule){
+        const {colors}=this.state
+        //get the position of schedule
+        let start_h=parseInt(schedule.start.split(":")[0])
+        let start_m=parseFloat(schedule.start.split(":")[1])/60
+        let end_h=parseInt(schedule.end.split(":")[0])
+        let end_m=parseFloat(schedule.end.split(":")[1])/60
+        let start_id=schedule.weekday+"-"+start_h
+        let end_id=schedule.weekday+"-"+end_h
+
+        let width=document.getElementById(end_id).offsetWidth
+        let height=document.getElementById(end_id).offsetHeight
+        let top=(document.getElementById(start_id).offsetTop)-((1-start_m)*height)
+        let totalh=(height*(end_h-start_h-start_m+end_m)).toFixed(2)
+
+        // the style for each schedule
+        let stylecss={
+            width:width+"px",
+            height:totalh+"px",
+            backgroundColor:colors[schedule.type],
+            top:top+height+"px",
+        }
+        return stylecss  
     }
     render(){
         const {day,date,schedules,title,editSchedule,addSchedule}=this.props
-        const {hours}=this.state
+        const {hours,schedulesWithStyle}=this.state
         return(
             <div className={day!=="not"? wk.columns:wk.numClo}>
                 {
-                    day!=="not"&&schedules&&schedules.map((item,i)=>{
+                    day!=="not"&&schedules&&schedulesWithStyle.map((item,i)=>{
                         return <Schedule day={day} date={date} schedule={item} editSchedule={editSchedule} key={"schedule-"+day+"-"+i}></Schedule>
                     })
                 }  
@@ -22,7 +65,7 @@ export default class Weekday extends Component {
                             if(hour===0) return <div key={day+"-"+hour} style={{height:"2em",backgroundColor:"#fad783"}}>&nbsp;</div>
                             else return <div className={wk.num} key={day+hour}>{hour}</div>
                         } 
-                        else if(hour===0) return <div key={day+"-"+hour} className={wk.title}>{title}</div>
+                        else if(hour===0) return <div key={day+"-"+hour} className={wk.date}>{title}</div>
                         else return <Square addSchedule={addSchedule} key={day+"-"+hour} day={day} date={date} id={day+"-"+(hour)} hour={hour}> </Square>
                     })
                 }           
@@ -40,7 +83,6 @@ class Schedule extends Component{
         }
     }
     popUp=(is)=> { 
-        // const {isOpen}=this.state
         this.setState(
             {isOpen:is}
         )
@@ -54,7 +96,8 @@ class Schedule extends Component{
                 <div className={wk.ss} style={schedule.style} onClick={()=>this.popUp(true)}>
                     <div className={wk.start_time}>{schedule.start}</div>
                     <div className={wk.end_time}>{schedule.end}</div>
-                    <div className={wk.info}>infoinfoinfo</div>
+                    <div className={wk.title}>{schedule.title}</div>
+                    <div className={wk.info}>{schedule.info}</div>
                 </div>
                 {isOpen && <PopBox
                         stype={type}

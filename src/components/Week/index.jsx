@@ -12,7 +12,8 @@ export default class TimeLine extends Component {
                     start:"15:15",
                     end:"18:45",
                     type:0,
-                    info:'details',
+                    title:"splatoon",
+                    info:'salmon run',
                     weekday:1,
                     shareWith:[
                         {
@@ -26,69 +27,60 @@ export default class TimeLine extends Component {
                     ],
                     id:"63282dgwyw738"
                 }
-            ],null,null,null,[
+            ],null,[{
+                start:"8:15",
+                end:"12:45",
+                type:1,
+                title:"candy crush",
+                info:'4 rounds',
+                weekday:3,
+                shareWith:[
+                    {
+                        name:'tom',
+                        comment:'Tom\'s COMMENT'
+                }
+                ],
+                id:"68293dgwyw738"
+            }],null,[
                 {
                     start:"12:30",
                     end:"17:30",
                     type:2,
-                    info:'infoinfoinfo',
+                    title:"splatoon",
+                    info:'regular battle',
                     weekday:5,
                     shareWith:[],
                     id:"73294727hdhhss"
                 }
             ],null,null],
-            colors:{
-                0:"#91AD70",
-                1:"#89916B",
-                2:"#69B0AC"
-            },
             hours:24,
             days:['Mon','Tue','Wed','Thur','Fri','Sat','Sun'],
         }
     }
-    componentDidMount(){
-        this.showExits()
-    }
-    showExits=()=>{
+    editSchedule=(id,s)=>{
+        // update the item
         const {schedules}=this.state
-        const newss=schedules.map((ws)=>{
-            if (ws){
-                const newws=ws.map((s)=>{
-                    s.style=this.getStyle(s)
-                    return s
+        const index=parseInt(s.weekday-1)
+        const tmpschedules=schedules.map((ws,i)=>{
+            if(i===index){
+                const newws=ws.map((item)=>{
+                    if(item.id===id){
+                        //update all the details
+                        item.start=s.start
+                        item.end=s.end
+                        item.title=s.title
+                        item.type=s.stype
+                        item.info=s.info
+                        item.shareWith=s.shareWith
+                        return item
+                    }else return item
                 })
                 return newws
             }else return ws
         })
-        this.setState({schedules:newss})
-    }
-    getStyle(schedule){
-        const {colors}=this.state
-        //get the position of schedule
-        let start_h=parseInt(schedule.start.split(":")[0])
-        let start_m=parseFloat(schedule.start.split(":")[1])/60
-        let end_h=parseInt(schedule.end.split(":")[0])
-        let end_m=parseFloat(schedule.end.split(":")[1])/60
-        let start_id=schedule.weekday+"-"+start_h
-        let end_id=schedule.weekday+"-"+end_h
-
-        let width=document.getElementById(end_id).offsetWidth
-        let height=document.getElementById(end_id).offsetHeight
-        let top=(document.getElementById(start_id).offsetTop)-((1-start_m)*height)
-        let totalh=(height*(end_h-start_h-start_m+end_m)).toFixed(2)
-
-        // the style for each schedule
-        let stylecss={
-            width:width+"px",
-            height:totalh+"px",
-            backgroundColor:colors[schedule.type],
-            top:top+height+"px",
-        }
-        return stylecss  
-    }
-
-    editSchedule=(id,s)=>{
-        console.log(id,s)
+        this.setState({
+            schedules:tmpschedules
+        })
     }
     addSchedule=(id,news)=>{
 
