@@ -15,16 +15,7 @@ export default class TimeLine extends Component {
                     title:"splatoon",
                     info:'salmon run',
                     weekday:1,
-                    shareWith:[
-                        {
-                            name:'tom',
-                            comment:'Tom\'s COMMENT'
-                    },
-                        {
-                            name:'jerry',
-                            comment:"Jerry's comment"
-                        }
-                    ],
+                    shareWith:["tom","jerry"],
                     id:"63282dgwyw738"
                 }
             ],null,[{
@@ -34,12 +25,7 @@ export default class TimeLine extends Component {
                 title:"candy crush",
                 info:'4 rounds',
                 weekday:3,
-                shareWith:[
-                    {
-                        name:'tom',
-                        comment:'Tom\'s COMMENT'
-                }
-                ],
+                shareWith:["tom"],
                 id:"68293dgwyw738"
             }],null,[
                 {
@@ -83,7 +69,23 @@ export default class TimeLine extends Component {
         })
     }
     addSchedule=(id,news)=>{
-
+        const {schedules}=this.state
+        const index=news.weekday-1
+        news.id=id
+        console.log(news)
+        const newschedules=schedules.map((ws,i)=>{
+            if(i===index){
+                if(ws===null){
+                    ws=[news]
+                }else{
+                    ws.push(news)
+                }
+                return ws
+            }else return ws
+        })
+        this.setState(
+          {schedules:newschedules}
+        )
     }
   render() {
       const {days,schedules}=this.state

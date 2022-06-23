@@ -20,7 +20,7 @@ export default class Pane extends Component {
         dates[i]=tmp+"."+month
     }              
     this.setState(
-        {dates:dates}
+        {dates}
     )
     // console.log(current.getTimezoneOffset()/60)
 }

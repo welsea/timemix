@@ -3,20 +3,28 @@ import wk from './index.module.css'
 import PopBox from '../PopBox'
 
 export default class Weekday extends Component {
-    state={
-        hours:25,
-        schedulesWithStyle:[],
-        colors:{
-            0:"#91AD70",
-            1:"#89916B",
-            2:"#69B0AC"
-        },
+    constructor(props){
+        super(props)
+        this.state={
+            hours:25,
+            schedulesWithStyle:[],
+            colors:{
+                0:"#91AD70",
+                1:"#89916B",
+                2:"#69B0AC"
+            },
+            schedules:props.schedules
+        }
     }
+
     componentDidMount(){
         this.showExist()
     }
+    componentDidUpdate(){
+       
+    }
     showExist(){
-        const {schedules}=this.props
+        const {schedules}=this.state
         if (schedules){
             const newss=schedules.map((s)=>{
                 s.style=this.getStyle(s)
