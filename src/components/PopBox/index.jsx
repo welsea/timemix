@@ -16,7 +16,21 @@ export default class PopBox extends Component {
                     return h+":"+m
                 })
             }).flat(),
-            shareWith:[]
+            shareWith:[],
+            typeArr:[
+                {
+                    id:0,
+                    name:"work"
+                },
+                {
+                    id:1,
+                    name:"study"
+                },
+                {
+                    id:2,
+                    name:"life"
+                }
+            ]
         }
     }
     componentDidMount(){
@@ -88,7 +102,10 @@ export default class PopBox extends Component {
     }
     handleEnd(e){
         this.setState(
-            {end:e.target.value}
+            {
+                end:e.target.value,
+                endPick:e.target.value
+            }
         )
     }
     handleType=(e)=>{
@@ -132,7 +149,7 @@ export default class PopBox extends Component {
         operate(false)
     }
     render(){
-        const {days,mon,type,info,pick,startPick,endPick,title,shareWith}=this.state
+        const {days,mon,type,info,pick,startPick,endPick,title,shareWith,typeArr}=this.state
         const {stype,date,day}=this.props
         const showM=parseInt(date.split(".")[1])
         const showD=date.split(".")[0]
@@ -149,10 +166,12 @@ export default class PopBox extends Component {
                         <td><input defaultValue={title} onKeyUp={(e)=>this.handleTitle(e)}/></td>
                     </tr>
                     <tr><td>Type:</td>
-                        <td><select name="type" defaultValue={type} id="type" onChange={(e)=>this.handleType(e)}>
-                            <option value="0">work</option>
-                            <option value="1">study</option>
-                            <option value="2">life</option>
+                        <td><select name="type" value={type} id="type" onChange={(e)=>this.handleType(e)}>
+                            {
+                                typeArr.map((item)=>{
+                                    return <option key={item.id} value={item.id}>{item.name}</option>
+                                })
+                            }
                         </select></td>
                     </tr>
                     <tr><td>Time</td>

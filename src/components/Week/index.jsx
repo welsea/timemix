@@ -55,7 +55,7 @@ export default class TimeLine extends Component {
                         item.start=s.start
                         item.end=s.end
                         item.title=s.title
-                        item.type=s.stype
+                        item.type=s.type
                         item.info=s.info
                         item.shareWith=s.shareWith
                         return item

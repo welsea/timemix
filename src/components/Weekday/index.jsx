@@ -13,18 +13,19 @@ export default class Weekday extends Component {
                 1:"#89916B",
                 2:"#69B0AC"
             },
-            schedules:props.schedules
         }
     }
 
     componentDidMount(){
         this.showExist()
     }
-    componentDidUpdate(){
-       
+    componentDidUpdate(prevProps){
+        if(this.props.schedules!==prevProps.schedules){
+            this.showExist()
+        }
     }
     showExist(){
-        const {schedules}=this.state
+        const {schedules}=this.props
         if (schedules){
             const newss=schedules.map((s)=>{
                 s.style=this.getStyle(s)
@@ -43,7 +44,7 @@ export default class Weekday extends Component {
         let start_id=schedule.weekday+"-"+start_h
         let end_id=schedule.weekday+"-"+end_h
 
-        let width=document.getElementById(end_id).offsetWidth
+        let width=document.getElementById(end_id).offsetWidth-2
         let height=document.getElementById(end_id).offsetHeight
         let top=(document.getElementById(start_id).offsetTop)-((1-start_m)*height)
         let totalh=(height*(end_h-start_h-start_m+end_m)).toFixed(2)

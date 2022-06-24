@@ -33,6 +33,7 @@
   
 .ss{
     position: absolute;
+    border:1px solid white;
 }
 .start_time{
   position: absolute;
