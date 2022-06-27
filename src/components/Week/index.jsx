@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component} from 'react'
 import tl from './index.module.css'
 import Weekday from '../Weekday'
 
@@ -89,7 +89,7 @@ export default class TimeLine extends Component {
     }
   render() {
       const {days,schedules}=this.state
-      const {dates}=this.props
+      const dates=this.props.dates
     return (
       <div className={tl.layout}>
             {

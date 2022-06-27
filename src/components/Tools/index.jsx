@@ -1,94 +1,103 @@
-import React, { Component } from 'react'
+import React, { useReducer } from 'react'
 import DatePicker from "react-datepicker";
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaCalendarDay, FaSearch } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 import tool from './index.module.css'
 
-export default class Tools extends Component {
-  render() {
-    return (
-      <div className={tool.layout}>
-        <WeekNum />
-        <Search />
-      </div>
-    )
-  }
+function Search(){
+  return(
+    <div>
+      <input placeholder='search' className={tool.search}></input>
+      <WeekButton children={<FaSearch/>} />
+    </div>
+  )
 }
-class WeekNum extends Component{
-  state={
-    date:new Date(),
-    num:Math.ceil((new Date()).getDay()/7)
-  }
-  componentDidMount(){
-      this.setWeekNum()
-  }
-  setWeekNum(){
-    const {date}=this.state
-    const startDate = new Date(date.getFullYear(), 0, 1);
-    const days = Math.floor((date - startDate) /
-        (24 * 60 * 60 * 1000));
-         
-    const newnum = Math.ceil(days / 7);
-    this.setState({
-      num:newnum
-    })
-  }
-  handleDateChange=(e)=>{
-    const startDate = new Date(e.getFullYear(), 0, 1);
+
+function WeekButton(props){
+    return(
+        <span 
+            style={{color: "#f3aa28",margin:"0 2px"}} 
+            {...props}
+        ></span>
+    )
+}
+function ChangeWeekNum(e){
+    const startDate = new Date(new Date(e).getFullYear(), 0, 1);
     const days = Math.floor((e - startDate) /
         (24 * 60 * 60 * 1000));
     const newnum = Math.ceil(days / 7);
-    this.setState({
-      date:e,
-      num:newnum
-    })
+  
+    return newnum
   }
-  handleWeekNumChange=(t)=>{
-    // 1 -> prev
-    // 0 -> next
-    // judge month, change week number
-    const {date}=this.state
-    const currentDay=date.getDay()
-    let newDate=new Date()
-    if(t===1){
-      newDate.setDate(date.getDate() - currentDay - 1);
-    }else{
-      newDate.setDate(date.getDate() +(7- currentDay));
-    }
-    
-    this.setState({
-      date:newDate
-    })
-  }
-  render(){
-    const {date,num}=this.state
 
-    return(
+function Tools(){
+   let [state,dispatch]=useReducer(
+       (state,action)=>{
+        const currentDay=new Date(state.date).getDay()
+        let newDate=new Date()
+           switch (action.type){
+                case "PREV":return {
+                    date:newDate.setDate(new Date(state.date).getDate() - currentDay - 1),
+                    num:ChangeWeekNum(state.date)
+                }
+                case "NEXT":return {
+                    date:newDate.setDate(new Date(state.date).getDate() - (7-currentDay)),
+                    num:ChangeWeekNum(state.date)
+                }
+                case "PICKER":return{
+                    date:action.value,
+                    num:ChangeWeekNum(action.value)
+                }
+                case "INI": return{
+                  ...state,
+                  num:ChangeWeekNum(state.date)
+                }
+                default:
+
+           }
+       },
+       {
+           date:new Date(),
+           num:ChangeWeekNum(new Date())
+       }
+   ) 
+   
+   return(
+     <div className={tool.layout}>
       <div className={tool.alc}>
-        <div className={tool.alc} style={{marginRight:"2em"}}>
-          <i className="icofont-simple-left" style={{color: "#f3aa28",fontSize:"25px"}} onClick={()=>this.handleWeekNumChange(1)}></i>
-          <span style={{color: "#f3aa28"}}>Week {num}</span>
-          <i className="icofont-simple-right" style={{color: "#f3aa28",fontSize:"25px"}} onClick={()=>this.handleWeekNumChange(0)}></i>
-        </div>
-        <div className={tool.alc} >
-          <i className="icofont-ui-calendar" style={{color: "#f3aa28",marginRight: "5px",fontSize:"20px"}}></i>
-          <DatePicker
-            selected={date}
-            dateFormat="dd/MM/yyyy"
-            onChange={(d)=>this.handleDateChange(d)} //only when value has changed
-          />
-        </div>
-    </div>
-
-    )
-  }
-}
-class Search extends Component{
-  render(){
-    return(
-      <div>
-        <input placeholder='search' className={tool.search}></input>
-        <i className="icofont-search" style={{color: "#f3aa28",marginLeft: "5px",fontSize:"20px"}}></i>
+          <div className={tool.alc} style={{marginRight:"2em"}}>
+              <WeekButton 
+                  aria-label="Previous Week"
+                  onClick={() => {
+                      dispatch({ type: "PREV" });
+                  }}
+                  children={<FaAngleDoubleLeft/>}
+              ></WeekButton>
+          <span style={{color: "#f3aa28"}}>Week {state.num}</span>
+          <WeekButton 
+                  aria-label="Previous Week"
+                  onClick={() => {
+                      dispatch({ type: "PREV" });
+                  }}
+                  children={<FaAngleDoubleRight/>}
+              ></WeekButton>
+          </div>
+          <div className={tool.alc} >
+            <WeekButton children={<FaCalendarDay/>}></WeekButton>
+            <DatePicker
+              selected={state.date}
+              dateFormat="dd/MM/yyyy"
+              onChange={(event)=>dispatch({type:"DATEPICKER",value:event.target.value})}
+            />
+          </div>
       </div>
-    )
-  }
+      <Search />
+    </div>
+   )
 }
+
+
+export default Tools
+
+
+

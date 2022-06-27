@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { GrClose } from "react-icons/gr";
 import pop from './index.module.css'
 import { nanoid } from 'nanoid'
 
@@ -158,7 +159,12 @@ export default class PopBox extends Component {
             <div className={pop.popup_box}>
               <div className={pop.box}>
                 <div className={pop.closediv}>
-                    <i className="icofont-close icofont-2x" style={{color: "#ff8200"}} onClick={()=>this.handleClose(false)}></i>
+                    <span 
+                        className="icofont-close icofont-2x" 
+                        style={{color: "#ff8200"}} 
+                        onClick={()=>this.handleClose(false)}
+                        children={<GrClose/>}
+                        ></span>
                 </div>
                 <div className={pop.date}> {days[day-1]+", "+showD+" "+mon[showM-1]}</div>
                 <table className={pop.table}><tbody>
