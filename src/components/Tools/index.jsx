@@ -1,8 +1,14 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect } from 'react'
 import DatePicker from "react-datepicker";
 import { FaAngleDoubleLeft, FaAngleDoubleRight, FaCalendarDay, FaSearch } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 import tool from './index.module.css'
+import { DateTime } from "luxon";
+
+/**
+ * todo:
+ * [] 1. filter about types
+ */
 
 function Search(){
   return(
@@ -22,45 +28,59 @@ function WeekButton(props){
     )
 }
 function ChangeWeekNum(e){
-    const startDate = new Date(new Date(e).getFullYear(), 0, 1);
-    const days = Math.floor((e - startDate) /
-        (24 * 60 * 60 * 1000));
-    const newnum = Math.ceil(days / 7);
-  
+    const ldate=DateTime.fromJSDate(e)
+    const newnum = ldate.weekNumber
     return newnum
   }
 
-function Tools(){
+function changeDate(value,type){
+  const lxdate=DateTime.fromJSDate(value)
+  let wn=lxdate.weekNumber
+  if(type==="PREV"){
+    wn=lxdate.weekNumber-1
+  }else{
+    wn=lxdate.weekNumber+1
+  }
+  const newlxdate=DateTime.fromObject({
+    weekYear:lxdate.weekYear,
+    weekNumber:wn,
+  }).startOf("week")
+  const newdate=new Date(newlxdate)
+  return {date:newdate,num:wn}
+}
+function Tools(props){
    let [state,dispatch]=useReducer(
        (state,action)=>{
-        const currentDay=new Date(state.date).getDay()
-        let newDate=new Date()
            switch (action.type){
-                case "PREV":return {
-                    date:newDate.setDate(new Date(state.date).getDate() - currentDay - 1),
-                    num:ChangeWeekNum(state.date)
+                case "PREV":
+                  return {
+                    date:changeDate(state.date,action.type).date,
+                    num:changeDate(state.date,action.type).num
                 }
-                case "NEXT":return {
-                    date:newDate.setDate(new Date(state.date).getDate() - (7-currentDay)),
-                    num:ChangeWeekNum(state.date)
+                case "NEXT":
+                  return {
+                    date:changeDate(state.date,action.type).date,
+                    num:changeDate(state.date,action.type).num
                 }
-                case "PICKER":return{
+                case "PICKER":
+                  return{
                     date:action.value,
                     num:ChangeWeekNum(action.value)
                 }
-                case "INI": return{
-                  ...state,
-                  num:ChangeWeekNum(state.date)
-                }
                 default:
-
+                  return{
+                    ...state
+                  }
            }
        },
        {
            date:new Date(),
-           num:ChangeWeekNum(new Date())
+           num:DateTime.local().weekNumber
        }
    ) 
+   useEffect(() => {
+    props.changeDates(DateTime.fromJSDate(state.date))
+   }, [state.date])
    
    return(
      <div className={tool.layout}>
@@ -77,7 +97,7 @@ function Tools(){
           <WeekButton 
                   aria-label="Previous Week"
                   onClick={() => {
-                      dispatch({ type: "PREV" });
+                      dispatch({ type: "NEXT" });
                   }}
                   children={<FaAngleDoubleRight/>}
               ></WeekButton>
@@ -87,7 +107,8 @@ function Tools(){
             <DatePicker
               selected={state.date}
               dateFormat="dd/MM/yyyy"
-              onChange={(event)=>dispatch({type:"DATEPICKER",value:event.target.value})}
+              calendarStartDay={1}
+              onChange={(date)=>dispatch({type:"PICKER",value:date})}
             />
           </div>
       </div>
@@ -96,8 +117,4 @@ function Tools(){
    )
 }
 
-
 export default Tools
-
-
-

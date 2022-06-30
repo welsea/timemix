@@ -1,27 +1,29 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import Week from '../Week'
 import Tools from '../Tools'
-
+import { DateTime } from "luxon";
 
 export default function Pane() {
-  const [dates, setDates] = useState(updateDate(new Date()))
+  const [date, setDate] = useState(DateTime.now())
+  const [dates, setDates] = useState(getDates(date))
 
-  function updateDate(e){
-    const tmpDates=(Array(7).fill(null))
-    const current = e 
-    const month=current.getMonth()+1
-    const weekstart = current.getDate() - current.getDay()+1; 
-    
-    for (const i in tmpDates) {
-        let tmpd=weekstart+parseInt(i)
-        var tmp=(new Date(current.setDate(tmpd))).getDate();
-        tmpDates[i]=tmp+"."+month
-    }  
-    return tmpDates
+  function getDates(value){
+    let week=value.weekNumber
+    let year=value.year
+    let newdates=[...Array(7)].map((x,i)=>{
+      return DateTime.fromObject({
+        weekYear:year,
+        weekNumber:week,
+        weekday:i+1
+      }).day
+    })
+    return newdates
   }
 
-  function changeDates(date){
-    setDates(updateDate(date))
+  function changeDates(value){
+    const newdate=value.day
+    setDate(newdate)
+    setDates(getDates(value))
   }
   
   return (

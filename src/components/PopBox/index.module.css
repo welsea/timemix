@@ -34,7 +34,8 @@
 }
 .closediv{
   background: antiquewhite;
-    text-align: right;
+  text-align: right;
+  padding: 10px 20px;
 }
 .close{
   background:none;
