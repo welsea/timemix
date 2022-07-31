@@ -1,0 +1,18 @@
+.layout{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 10px 0;
+    align-content: center;
+    align-items: center;
+}
+
+.search{
+    font-size: 15px;
+    padding: 5px 10px;
+    border: 1px solid #d6d2d2;
+}
+
+.alc{
+    display: flex;
+    align-items: center;
+}
