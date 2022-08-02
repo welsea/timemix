@@ -1,41 +1,30 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import wk from './index.module.css'
 import PopBox from '../PopBox'
 
-export default class Weekday extends Component {
-    constructor(props){
-        super(props)
-        this.state={
-            hours:25,
-            schedulesWithStyle:[],
-            colors:{
-                0:"#91AD70",
-                1:"#89916B",
-                2:"#69B0AC"
-            },
-        }
+export default function Weekday(props) {
+    const colors={
+        0:"#91AD70",
+        1:"#89916B",
+        2:"#69B0AC"
     }
+    const hours=25
+    const [schWithStyle, setSchWithStyle] = useState([])
+    const schedules=props.schedules
 
-    componentDidMount(){
-        this.showExist()
-    }
-    componentDidUpdate(prevProps){
-        if(this.props.schedules!==prevProps.schedules){
-            this.showExist()
-        }
-    }
-    showExist(){
-        const {schedules}=this.props
-        if (schedules){
+    useEffect(() => {
+        if(schedules){
             const newss=schedules.map((s)=>{
-                s.style=this.getStyle(s)
+                s.style=getStyle(s)
                 return s
             })
-            this.setState({schedulesWithStyle:newss})
+            setSchWithStyle(newss)
         }
-    }
-    getStyle(schedule){
-        const {colors}=this.state
+      return () => {
+      }
+    }, [schedules])
+
+    function getStyle(schedule){
         // TODO: change to only need calculate once, when window size changed calculate again.
         //get the position of schedule
         let start_h=parseInt(schedule.start.split(":")[0])
@@ -58,116 +47,91 @@ export default class Weekday extends Component {
         }
         return stylecss  
     }
-    render(){
-        const {day,date,schedules,title,editSchedule,addSchedule}=this.props
-        const {hours,schedulesWithStyle}=this.state
-        return(
-            <div className={day!=="not"? wk.columns:wk.numClo}>
-                {
-                    day!=="not"&&schedules&&schedulesWithStyle.map((item,i)=>{
-                        return <Schedule day={day} date={date} schedule={item} editSchedule={editSchedule} key={"schedule-"+day+"-"+i}></Schedule>
-                    })
-                }  
-                {
-                    [...Array(hours)].map((e,hour)=>{
-                        if(day==="not"){
-                            if(hour===0) return <div key={day+"-"+hour} style={{height:"2em",backgroundColor:"#fad783"}}>&nbsp;</div>
-                            else return <div className={wk.num} key={day+hour}>{hour}</div>
-                        } 
-                        else if(hour===0) return <div key={day+"-"+hour} className={wk.date}>{title}</div>
-                        else return <Square addSchedule={addSchedule} key={day+"-"+hour} day={day} date={date} id={day+"-"+(hour)} hour={hour}> </Square>
-                    })
-                }           
-            </div>
-        )
-    }
+    const {day,date,title,editSchedule,addSchedule}=props
+  return (
+    <div className={day!=="not"? wk.columns:wk.numClo}>
+    {
+        day!=="not"&&schedules&&schWithStyle.map((item,i)=>{
+            return <Schedule day={day} date={date} schedule={item} editSchedule={editSchedule} key={"schedule-"+day+"-"+i}></Schedule>
+        })
+    }  
+    {
+        [...Array(hours)].map((e,hour)=>{
+            if(day==="not"){
+                if(hour===0) return <div key={day+"-"+hour} style={{height:"2em",backgroundColor:"#fad783"}}>&nbsp;</div>
+                else return <div className={wk.num} key={day+hour}>{hour}</div>
+            } 
+            else if(hour===0) return <div key={day+"-"+hour} className={wk.date}>{title}</div>
+            else return <Square addSchedule={addSchedule} key={day+"-"+hour} day={day} date={date} id={day+"-"+(hour)} hour={hour}> </Square>
+        })
+    }           
+</div>
+  )
 }
 
-class Schedule extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            type:1,
-            isOpen:false,
-        }
-    }
-    popUp=(is)=> { 
-        this.setState(
-            {isOpen:is}
-        )
-    }
-    render(){
-        const {schedule,day,date,editSchedule}=this.props
-        const {type,isOpen}=this.state
-        const hour=schedule.start.split(":")[0]
-        return(
-            <>
-                <div className={wk.ss} style={schedule.style} onClick={()=>this.popUp(true)}>
-                    <div className={wk.start_time}>{schedule.start}</div>
-                    <div className={wk.end_time}>{schedule.end}</div>
-                    <div className={wk.title}>{schedule.title}</div>
-                    <div className={wk.info}>{schedule.info}</div>
-                </div>
-                {isOpen && <PopBox
-                        stype={type}
-                        day={day}
-                        date={date}
-                        hour={hour}
-                        schedule={schedule}
-                        operate={this.popUp}
-                        editSchedule={editSchedule}
-                />}
-            </>
 
-        )
+function Schedule(props){
+    const [isopen, setIsopen] = useState(false)
+    const type=1
+
+    function popUp(is){
+        setIsopen(is)
     }
+
+    const {schedule,day,date,editSchedule}=props
+    const hour=schedule.start.split(":")[0]
+    return(
+        <>
+        <div className={wk.ss} style={schedule.style} onClick={()=>{setIsopen(true)}}>
+            <div className={wk.start_time}>{schedule.start}</div>
+            <div className={wk.end_time}>{schedule.end}</div>
+            <div className={wk.title}>{schedule.title}</div>
+            <div className={wk.info}>{schedule.info}</div>
+        </div>
+            {isopen && <PopBox
+                    stype={type}
+                    day={day}
+                    date={date}
+                    hour={hour}
+                    schedule={schedule}
+                    operate={popUp}
+                    editSchedule={editSchedule}
+            />}
+        </>
+    )
 }
 
- // each hour in timeline table
-class Square extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            isOpen:false,
-            mouse:false,
-            type:0
-        }
+
+function Square(props){
+    const [isopen, setIsopen] = useState(false)
+    const [mouse, setMouse] = useState(false)
+    const type=0
+
+    function popUp(is){
+        setIsopen(is)
     }
-    popUp=(is)=> { 
-        // const {isOpen}=this.state
-        this.setState(
-            {isOpen:is}
-        )
+    function handleMouseEnter(){
+        setMouse(true)
     }
-    // hover css
-    handleMouseEnter=()=>{
-        this.setState(
-          {mouse:true}
-        )
+    function handleMouseLeave(){
+       setMouse(false)
     }
-    handleMouseLeave=()=>{
-        this.setState(
-          {mouse:false}
-        )
-    }
-    render (){
-        const {date,hour,id,day,addSchedule}=this.props
-        const {isOpen,mouse,type}=this.state
-        return(
-            <>
-                <div style={{backgroundColor:mouse? '#ddd':'white'}} className={wk.hour} onClick={(e)=>this.popUp(e,true)} id={id} 
-                onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-                    &nbsp;
-                </div>
-                {isOpen && <PopBox
-                        stype={type}
-                        date={date}
-                        day={day}
-                        hour={hour}
-                        operate={this.popUp}
-                        addSchedule={addSchedule}
-                    />}
-            </>
-        )
-    }
+
+    const {date,hour,id,day,addSchedule}=props
+    return(
+        <>
+        <div style={{backgroundColor:mouse? '#ddd':'white'}} className={wk.hour} onClick={()=>{setIsopen(true)}} id={id} 
+        onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            &nbsp;
+        </div>
+        {isopen && <PopBox
+                stype={type}
+                date={date}
+                day={day}
+                hour={hour}
+                operate={popUp}
+                addSchedule={addSchedule}
+            />}
+    </>
+    )
 }
