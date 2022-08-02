@@ -3,6 +3,8 @@ import wk from './index.module.css'
 import PopBox from '../PopBox'
 
 export default function Weekday(props) {
+    const {day,date,coltitle,editSchedule,addSchedule,schedules}=props
+
     const colors={
         0:"#91AD70",
         1:"#89916B",
@@ -10,7 +12,7 @@ export default function Weekday(props) {
     }
     const hours=25
     const [schWithStyle, setSchWithStyle] = useState([])
-    const schedules=props.schedules
+    const months=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
     useEffect(() => {
         if(schedules){
@@ -47,26 +49,32 @@ export default function Weekday(props) {
         }
         return stylecss  
     }
-    const {day,date,title,editSchedule,addSchedule}=props
-  return (
-    <div className={day!=="not"? wk.columns:wk.numClo}>
-    {
-        day!=="not"&&schedules&&schWithStyle.map((item,i)=>{
-            return <Schedule day={day} date={date} schedule={item} editSchedule={editSchedule} key={"schedule-"+day+"-"+i}></Schedule>
-        })
-    }  
-    {
-        [...Array(hours)].map((e,hour)=>{
-            if(day==="not"){
-                if(hour===0) return <div key={day+"-"+hour} style={{height:"2em",backgroundColor:"#fad783"}}>&nbsp;</div>
-                else return <div className={wk.num} key={day+hour}>{hour}</div>
-            } 
-            else if(hour===0) return <div key={day+"-"+hour} className={wk.date}>{title}</div>
-            else return <Square addSchedule={addSchedule} key={day+"-"+hour} day={day} date={date} id={day+"-"+(hour)} hour={hour}> </Square>
-        })
-    }           
-</div>
-  )
+
+    return (
+        <div className={day!=="not"? wk.columns:wk.numClo}>
+            {
+                day!=="not"&&schedules&&schWithStyle.map((item,i)=>{
+                    return <Schedule day={day} date={date} schedule={item} editSchedule={editSchedule} key={"schedule-"+day+"-"+i}></Schedule>
+                })
+            }  
+            {
+                [...Array(hours)].map((e,hour)=>{
+                    if(day==="not"){
+                        if(hour===0) return <div key={day+"-"+hour} style={{height:"2em",backgroundColor:"#fad783"}}>&nbsp;</div>
+                        else return <div className={wk.num} key={day+hour}>{hour}</div>
+                    } 
+                    else if(hour===0) {
+                        return( 
+                            <div key={day+"-"+hour} className={wk.showtitle}>
+                                <div>{coltitle[0]},</div>
+                                <div className={wk.date}>{coltitle[1].split(".")[0]+" "+months[parseInt(coltitle[1].split(".")[1])]}</div>
+                            </div>
+                            )}
+                    else return <Square addSchedule={addSchedule} key={day+"-"+hour} day={day} date={date} id={day+"-"+(hour)} hour={hour}> </Square>
+                })
+            }           
+        </div>
+    )
 }
 
 

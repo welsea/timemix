@@ -3,6 +3,13 @@ import { GrClose } from "react-icons/gr";
 import pop from './index.module.css'
 import { nanoid } from 'nanoid'
 
+/**
+ * 
+ * TODO:
+ * 1. change all the form action into useReducer
+ * 
+ */
+
 
 export default function PopBox(props) {
     const {schedule,stype,addSchedule,editSchedule,date,day,operate,hour}=props
@@ -110,7 +117,6 @@ export default function PopBox(props) {
             {...content,info:e.target.value}
         )
     }
-
 
     function handleConfirm(){
         const s={...content,date:date,weekday:day}

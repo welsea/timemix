@@ -9,6 +9,8 @@ import Weekday from '../Weekday'
  * 
  */
 export default function TimeLine(props) {
+    const dates=props.dates
+
     const [schedules, setSchedules] = useState(
         [
             [
@@ -95,14 +97,14 @@ export default function TimeLine(props) {
         setSchedules(newschedules)
     }
 
-    const dates=props.dates
+
   return (
     <div className={tl.layout}>
     {
         [""].concat(days).map((day,i)=>{
             if(i===0) return <Weekday key={"num"} day={"not"}></Weekday>
             else{
-                return <Weekday key={day} title={day+". "+dates[i-1]} day={i} date={dates[i-1]} schedules={schedules[i-1]?schedules[i-1]:false}  
+                return <Weekday key={day} coltitle={[day,dates[i-1]]} day={i} date={dates[i-1]} schedules={schedules[i-1]?schedules[i-1]:false}  
                 addSchedule={addSchedule} editSchedule={editSchedule}></Weekday>} 
         })
     }

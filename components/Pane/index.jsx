@@ -23,8 +23,7 @@ export default function Pane() {
   }
 
   function changeDates(value){
-    const newdate=value.day
-    setDate(newdate)
+    setDate(value.day)
     setDates(getDates(value))
   }
   
