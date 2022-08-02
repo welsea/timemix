@@ -12,7 +12,6 @@
     flex-direction: column;
 }
 
-
 .numClo{
     width: 2em;
     min-width: 2em;
@@ -33,7 +32,9 @@
   
 .ss{
     position: absolute;
-    border:1px solid white;
+    border-left:1px solid white;
+    border-right:1px solid white;
+    width:calc(14% - 3px);
 }
 .start_time{
   position: absolute;

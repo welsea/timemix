@@ -154,7 +154,6 @@ export default class PopBox extends Component {
         const {stype,date,day}=this.props
         const showM=parseInt(date.split(".")[1])
         const showD=date.split(".")[0]
-        console.log(date)
         
         return(
             <div className={pop.popup_box}>

@@ -36,25 +36,25 @@ export default class Weekday extends Component {
     }
     getStyle(schedule){
         const {colors}=this.state
+        // TODO: change to only need calculate once, when window size changed calculate again.
         //get the position of schedule
         let start_h=parseInt(schedule.start.split(":")[0])
         let start_m=parseFloat(schedule.start.split(":")[1])/60
         let end_h=parseInt(schedule.end.split(":")[0])
         let end_m=parseFloat(schedule.end.split(":")[1])/60
+        // grid id for start hour
         let start_id=schedule.weekday+"-"+start_h
         let end_id=schedule.weekday+"-"+end_h
 
-        let width=document.getElementById(end_id).offsetWidth-2
         let height=document.getElementById(end_id).offsetHeight
-        let top=(document.getElementById(start_id).offsetTop)-((1-start_m)*height)
-        let totalh=(height*(end_h-start_h-start_m+end_m)).toFixed(2)
-
+        let top=(document.getElementById(start_id).offsetTop)+(start_m*height)
+        // each hour's height is 2em.
+        let totalh=(2*(end_h-start_h-1+end_m-start_m)).toFixed(2)
         // the style for each schedule
         let stylecss={
-            width:width+"px",
-            height:totalh+"px",
+            height:totalh+"em",
             backgroundColor:colors[schedule.type],
-            top:top+height+"px",
+            top:top+"px",
         }
         return stylecss  
     }
