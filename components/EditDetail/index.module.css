@@ -1,0 +1,43 @@
+.table{
+    width:100%;
+    padding:0 20px;
+  }
+  .table input{
+    width:90%;
+    border-style: none none solid none;
+    border-width: 1px;
+    padding: 0.5em 0.1em;
+  }
+  .table textarea{
+    width:60%;
+    padding: 0.5em 0.1em;
+  }
+  .table tr{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 1em;
+  }
+  .table td:first-child{
+    font-weight: 700;
+  }
+  .table select{
+    padding: 0.5em;
+      margin: 0.2em 0;
+      border: 1px solid #c4c1c1;
+  }
+
+
+  .addBtn{
+    background-color: #E98B2A;
+    padding: 0.5em 1em;
+    color: white;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .note{
+    font-size: 0.7em;
+    display: block;
+    color: gray;
+  }

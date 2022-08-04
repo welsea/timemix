@@ -3,7 +3,8 @@ import React from 'react';
 import Header from '../components/Header';
 import Router from 'next/router';
 import Pane from '../components/Pane'
-// import Pane from './components/Pane';
+// import Test from '../components/Test';
+
 export default class App extends React.Component{
   gotoTr=()=>{
     Router.push({
@@ -19,8 +20,8 @@ export default class App extends React.Component{
       <div>
         <Header/>
         <Pane/>
-        {/* <Timeline/> */}
         <a onClick={this.gotoTr}>to tr</a>
+        {/* <Test/> */}
       </div>
     )
   }
