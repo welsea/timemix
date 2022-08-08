@@ -26,6 +26,7 @@ export default function Detail(props) {
         Router.push({
           pathname:'/user',
           query:{
+            id:2,
             name:id,
           }
         },'/user/@'+id)
