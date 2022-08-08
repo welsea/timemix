@@ -1,0 +1,53 @@
+.table{
+    width:80%;
+    padding:20px 0;
+    margin: auto;
+  }
+
+  .table tr{
+    /* width:100%; */
+    display: flex;
+    padding: 0 0 1em;
+    align-items: center;
+  }
+  .table td:first-child{
+    font-size: 0.8em;
+    color: #bcb6ac;
+    margin-right: 0.5em;
+  }
+  .table select{
+    padding: 0.5em;
+      margin: 0.2em 0;
+      border: 1px solid #c4c1c1;
+  }
+
+
+  .addBtn{
+    background-color: #E98B2A;
+    padding: 0.5em 1em;
+    color: white;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .type{
+    color: white;
+    padding: 2px 5px;
+    border-radius: 2px;
+    /* background: linear-gradient(45deg, #58a 25%, #fff 0, #fff 50%, #58a 0, #58a 75%, #fff 0, #fff 100%);
+    background-size: 5px 5px; */
+  }
+
+  .title{
+    font-size: 1.4em;
+  }
+
+  .name{
+    margin-right: 0.5em;
+    text-decoration: underline;
+    color: #E98B2A;
+  }
+
+  .namelist{
+    display: flex;
+  }
