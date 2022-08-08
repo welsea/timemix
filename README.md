@@ -1,5 +1,3 @@
-# info
-the front-end part of timemix.
-a schedule sharing website.
+Share schedule with your friends in diferent timezone.
 
-build with React
+React+Next.js+Redis
