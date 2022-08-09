@@ -9,17 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "ioredis": "^5.2.2",
-    "next": "12.2.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
     "@koa/router": "^12.0.0",
     "@reduxjs/toolkit": "^1.8.3",
+    "ioredis": "^5.2.2",
+    "ioredis-json": "^0.1.1",
     "koa": "^2.13.4",
     "koa-router": "^12.0.0",
     "luxon": "^2.4.0",
     "nanoid": "^3.3.2",
+    "next": "12.2.4",
+    "react": "18.2.0",
     "react-datepicker": "^4.8.0",
+    "react-dom": "18.2.0",
     "react-icons": "^4.4.0"
   },
   "devDependencies": {

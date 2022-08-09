@@ -46,9 +46,9 @@ export default function Weekday(props) {
     let end_h = parseInt(schedule.end.split(":")[0]);
     let end_m = parseFloat(schedule.end.split(":")[1]) / 60;
     // grid id for start hour
-    let start_id = schedule.weekday + "-" + start_h;
+    let start_id = schedule.weekday+ "-" + start_h;
     let end_id = schedule.weekday + "-" + end_h;
-
+    console.log()
     let height = document.getElementById(end_id).offsetHeight;
     let top = document.getElementById(start_id).offsetTop + start_m * height;
     // each hour's height is 2em.
@@ -101,7 +101,7 @@ export default function Weekday(props) {
               <div className={wk.date}>
                 {coltitle[1].split(".")[0] +
                   " " +
-                  months[parseInt(coltitle[1].split(".")[1])]}
+                  months[parseInt(coltitle[1].split(".")[1])-1]}
               </div>
             </div>
           );

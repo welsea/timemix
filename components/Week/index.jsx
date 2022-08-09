@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import tl from "./index.module.css";
 import Weekday from "../Weekday";
-import {MainContext} from "../../lib/context";
+import { MainContext } from "../../pages";
+// import { MainContext } from "../../pages/context";
 
 /**
  *
@@ -9,71 +10,72 @@ import {MainContext} from "../../lib/context";
  * 1. add new schedules, page not update.
  *
  */
-export default function TimeLine(props) {
-  const dates = props.dates;
+export default function Week(props) {
+  const content = useContext(MainContext)
 
-  const test = useContext(MainContext)
-
+  const dates = content.dates;
+  
   useEffect(() => {
-    console.log(test)
+    console.log(content.schedules)
   
     return () => {
     }
   }, [])
   
 
-  const [schedules, setSchedules] = useState([
-    [
-      {
-        start: "15:15",
-        end: "18:45",
-        type: 0,
-        title: "splatoon",
-        info: "salmon run",
-        weekday: 1,
-        shareWith: ["tom", "jerry"],
-        id: "63282dgwyw738",
-      },
-    ],
-    null,
-    [
-      {
-        start: "8:15",
-        end: "12:45",
-        type: 1,
-        title: "candy crush",
-        info: "4 rounds",
-        weekday: 3,
-        shareWith: ["tom"],
-        id: "68293dgwyw738",
-      },
-      {
-        start: "13:15",
-        end: "16:45",
-        type: 2,
-        title: "shopping",
-        info: "list",
-        weekday: 3,
-        shareWith: ["tom"],
-        id: "68293dgwyw038",
-      },
-    ],
-    null,
-    [
-      {
-        start: "12:30",
-        end: "17:30",
-        type: 2,
-        title: "splatoon",
-        info: "regular battle",
-        weekday: 5,
-        shareWith: [],
-        id: "73294727hdhhss",
-      },
-    ],
-    null,
-    null,
-  ]);
+  const [schedules, setSchedules] = useState(content.schedules);
+  // const [schedules, setSchedules] = useState([
+  //   [
+  //     {
+  //       start: "15:15",
+  //       end: "18:45",
+  //       type: 0,
+  //       title: "splatoon",
+  //       info: "salmon run",
+  //       weekday: 1,
+  //       shareWith: ["tom", "jerry"],
+  //       id: "63282dgwyw738",
+  //     },
+  //   ],
+  //   null,
+  //   [
+  //     {
+  //       start: "8:15",
+  //       end: "12:45",
+  //       type: 1,
+  //       title: "candy crush",
+  //       info: "4 rounds",
+  //       weekday: 3,
+  //       shareWith: ["tom"],
+  //       id: "68293dgwyw738",
+  //     },
+  //     {
+  //       start: "13:15",
+  //       end: "16:45",
+  //       type: 2,
+  //       title: "shopping",
+  //       info: "list",
+  //       weekday: 3,
+  //       shareWith: ["tom"],
+  //       id: "68293dgwyw038",
+  //     },
+  //   ],
+  //   null,
+  //   [
+  //     {
+  //       start: "12:30",
+  //       end: "17:30",
+  //       type: 2,
+  //       title: "splatoon",
+  //       info: "regular battle",
+  //       weekday: 5,
+  //       shareWith: [],
+  //       id: "73294727hdhhss",
+  //     },
+  //   ],
+  //   null,
+  //   null,
+  // ]);
   const days = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
 
   function editSchedule(id, s) {
@@ -104,7 +106,6 @@ export default function TimeLine(props) {
   function addSchedule(id, news) {
     const index = news.weekday - 1;
     news.id = id;
-    console.log(news);
     const newschedules = schedules.map((ws, i) => {
       if (i === index) {
         if (ws === null) {
@@ -129,7 +130,7 @@ export default function TimeLine(props) {
               coltitle={[day, dates[i - 1]]}
               day={i}
               date={dates[i - 1]}
-              schedules={schedules[i - 1] ? schedules[i - 1] : false}
+              schedules={schedules[i - 1]? schedules[i - 1][0] : false}
               addSchedule={addSchedule}
               editSchedule={editSchedule}
             ></Weekday>

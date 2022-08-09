@@ -1,5 +1,11 @@
+// use this can't fetch data
+
+
 import React, { createContext, useState} from 'react'
-// import redis from './redis';
+import Redis from 'ioredis'
+
+
+let redis = new Redis(process.env.REDIS_URL)
 
 export const MainContext = createContext();
 
@@ -9,7 +15,10 @@ export const MainContext = createContext();
  */
 
 
+
 export default function Main(props){
+    const [title, setTitle] = useState(props.data)
+
     const obj={
         "id":"id1",
         "name":"name1"
@@ -17,8 +26,16 @@ export default function Main(props){
     const [test, setTest] = useState("test")
     
     return (
-        <MainContext.Provider value={test}>
+        <MainContext.Provider value={title}>
           {props.children}
         </MainContext.Provider>
       );
+}
+
+
+export async function getServerSideProps() {
+  const data=await redis.get("counter");
+  // const data=JSON.parse(tmp)
+  // console.log(data)
+  return { props: { data } }
 }
