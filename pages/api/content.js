@@ -2,17 +2,20 @@ import Redis from 'ioredis'
 
 let redis = new Redis(process.env.REDIS_URL)
 
-export default async (req, res) => {
+export default async function handler(req, res) {
   if(req.method==="GET"){
-    
-    const tmp = await redis.call("JSON.GET", "schedules_user1", "$..2022.8.2");
-    const content=JSON.parse(tmp)
-    res.status(200).json({ "content":content})
+    const date=req.query
+    const result=await test(date)
+    res.status(200).json({content:result})
   }else if(req.method==="PUT"){
-    const tmp = await redis.call("JSON.GET", "schedules_user1", "$..2022.8.2");
-    const content=JSON.parse(tmp)
-    const id=req.query.week
-    res.status(200).json({ "content":id })
+    const date=req.query
+    const result=await test(date)
+    res.status(200).json({content:result})
   }
 
+}
+
+async function test(date){
+  const tmp = await redis.call("JSON.GET", "schedules_user1", "$..2022.8.8");
+  return tmp
 }

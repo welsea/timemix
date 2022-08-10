@@ -11,71 +11,9 @@ import { MainContext } from "../../pages";
  *
  */
 export default function Week(props) {
-  const content = useContext(MainContext)
-
+  const content = useContext(MainContext);
   const dates = content.dates;
-  
-  useEffect(() => {
-    console.log(content.schedules)
-  
-    return () => {
-    }
-  }, [])
-  
-
   const [schedules, setSchedules] = useState(content.schedules);
-  // const [schedules, setSchedules] = useState([
-  //   [
-  //     {
-  //       start: "15:15",
-  //       end: "18:45",
-  //       type: 0,
-  //       title: "splatoon",
-  //       info: "salmon run",
-  //       weekday: 1,
-  //       shareWith: ["tom", "jerry"],
-  //       id: "63282dgwyw738",
-  //     },
-  //   ],
-  //   null,
-  //   [
-  //     {
-  //       start: "8:15",
-  //       end: "12:45",
-  //       type: 1,
-  //       title: "candy crush",
-  //       info: "4 rounds",
-  //       weekday: 3,
-  //       shareWith: ["tom"],
-  //       id: "68293dgwyw738",
-  //     },
-  //     {
-  //       start: "13:15",
-  //       end: "16:45",
-  //       type: 2,
-  //       title: "shopping",
-  //       info: "list",
-  //       weekday: 3,
-  //       shareWith: ["tom"],
-  //       id: "68293dgwyw038",
-  //     },
-  //   ],
-  //   null,
-  //   [
-  //     {
-  //       start: "12:30",
-  //       end: "17:30",
-  //       type: 2,
-  //       title: "splatoon",
-  //       info: "regular battle",
-  //       weekday: 5,
-  //       shareWith: [],
-  //       id: "73294727hdhhss",
-  //     },
-  //   ],
-  //   null,
-  //   null,
-  // ]);
   const days = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
 
   function editSchedule(id, s) {
@@ -130,7 +68,7 @@ export default function Week(props) {
               coltitle={[day, dates[i - 1]]}
               day={i}
               date={dates[i - 1]}
-              schedules={schedules[i - 1]? schedules[i - 1][0] : false}
+              schedules={schedules[i - 1] ? schedules[i - 1][0] : false}
               addSchedule={addSchedule}
               editSchedule={editSchedule}
             ></Weekday>

@@ -4,9 +4,8 @@ import { createContext, useState } from "react";
 import Header from "../components/Header";
 import Pane from "../components/Pane";
 import { DateTime } from "luxon";
-import contentDisposition from "content-disposition";
 
-// get data
+// connect redis
 let redis = new Redis(process.env.REDIS_URL);
 
 // useContext
@@ -38,32 +37,35 @@ export default function App({ data }) {
     setDates(getDates(value));
   }
 
-  // // const increment = async () => {
-  // //   const response = await fetch('/api/incr', { method: 'POST' })
-  // //   const data = await response.json()
-  // //   setCount(data.count)
-  // // }
-
+  const [test, setTest] = useState([])
   const changeweek = async () => {
-    const response = await fetch("/api/content", {
-      method: "PUT",
-      query: {
-        week: 2,
-      },
+    const response = await fetch("/api/content?"+"8.2", {
+      method: "PUT"
     });
     const content = await response.json();
-    // console.log(content)
+    setTest(content.content)
   };
   const getweek = async () => {
-    const response = await fetch("/api/content", {
-      method: "GET",
-      query: {
-        week: 1,
-      },
+    const response = await fetch("/api/content?"+"8.2", {
+      method: "GET"
     });
     const content = await response.json();
-    // console.log(content)
+    setTest(content.content)
   };
+
+  const [test2, settest2] = useState([])
+  // const getdd=async()=>{
+  //   const tmp=date.toISODate({ format: 'basic' })
+  //   const response=await fetch("/api/dates?"+tmp )
+  //   const testdate=await response.json()
+  //   settest2(testdate.date)
+  // }
+
+  const getdd=()=>{
+    const tmp=date.toISODate({ format: 'basic' })
+    const tmp2=DateTime.fromFormat(tmp,"yyyyMMdd") 
+    settest2(tmp2.toString())
+  }
 
   return (
     <div>
@@ -74,10 +76,15 @@ export default function App({ data }) {
       {/* <a onClick={this.gotoTr}>to tr</a> */}
       <button onClick={getweek}>get</button>
       <button onClick={changeweek}>change</button>
+      <div>{test}</div>
+      <button onClick={getdd}>get date</button>
+      <div>{test2}</div>
     </div>
   );
 }
 
+
+// get initial full week schedules
 export async function getServerSideProps() {
   const now = DateTime.now();
   const mon = now.month;
