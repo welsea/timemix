@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 // import React from "react";
 import Header from "../components/Header";
 import Pane from "../components/Pane";
@@ -11,6 +11,7 @@ let redis = new Redis(process.env.REDIS_URL);
 // useContext
 export const MainContext = createContext();
 
+// get whole week dates
 function getDates(value) {
   let week = value.weekNumber;
   let year = value.year;
@@ -31,64 +32,70 @@ export default function App({ data }) {
 
   const [date, setDate] = useState(DateTime.now());
   const [dates, setDates] = useState(getDates(date));
+  const [pureDate, setPureDate] = useState(date.toISODate({format:"basic"}))
 
-  function changeDates(value) {
-    setDate(value.day);
-    setDates(getDates(value));
+  useEffect(() => {
+    let tmp=DateTime.fromFormat(pureDate,"yyyyMMdd")
+    setDate(tmp)
+    setDates(getDates(tmp))
+    // getSchedules(pureDate)
+    const getSchedules= async ()=>{
+      const response = await fetch("/api/content?date=" + pureDate, {
+        method: "GET",
+      });
+      const content = await response.json();
+      setSchedules(content)
+    }
+
+    getSchedules().catch(console.error)
+    return () => {}
+  }, [pureDate])
+  
+
+ async function getSchedules(date){
+    const response = await fetch("/api/content?date=" + date, {
+      method: "GET",
+    });
+    const content = await response.json();
+    setSchedules(content)
   }
 
-  const [test, setTest] = useState([])
+  // get schedules
   const changeweek = async () => {
-    const response = await fetch("/api/content?"+"8.2", {
-      method: "PUT"
+    const tmp=date.toISODate({format:"basic"})
+    const response = await fetch("/api/content?date=" + tmp, {
+      method: "PUT",
     });
     const content = await response.json();
-    setTest(content.content)
   };
+
+  // update shcedules
   const getweek = async () => {
-    const response = await fetch("/api/content?"+"8.2", {
-      method: "GET"
+    const tmp=date.toISODate({format:"basic"})
+    const response = await fetch("/api/content?date=" + tmp, {
+      method: "GET",
     });
     const content = await response.json();
-    setTest(content.content)
   };
-
-  const [test2, settest2] = useState([])
-  // const getdd=async()=>{
-  //   const tmp=date.toISODate({ format: 'basic' })
-  //   const response=await fetch("/api/dates?"+tmp )
-  //   const testdate=await response.json()
-  //   settest2(testdate.date)
-  // }
-
-  const getdd=()=>{
-    const tmp=date.toISODate({ format: 'basic' })
-    const tmp2=DateTime.fromFormat(tmp,"yyyyMMdd") 
-    settest2(tmp2.toString())
-  }
 
   return (
     <div>
       <Header />
-      <MainContext.Provider value={{ dates, schedules }}>
+      <MainContext.Provider value={{date:[pureDate,setPureDate],schedules:[schedules,setSchedules],dates}}>
         <Pane />
       </MainContext.Provider>
       {/* <a onClick={this.gotoTr}>to tr</a> */}
-      <button onClick={getweek}>get</button>
-      <button onClick={changeweek}>change</button>
-      <div>{test}</div>
-      <button onClick={getdd}>get date</button>
-      <div>{test2}</div>
+      <button >{pureDate}</button>
     </div>
   );
 }
-
 
 // get initial full week schedules
 export async function getServerSideProps() {
   const now = DateTime.now();
   const mon = now.month;
-  const week = getDates(now).map((item, i) => {
+  const dates = getDates(now);
+  const week = dates.map((item, i) => {
     let tmp = item.split(".");
     return tmp[0];
   });

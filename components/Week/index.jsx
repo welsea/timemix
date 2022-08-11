@@ -4,16 +4,19 @@ import Weekday from "../Weekday";
 import { MainContext } from "../../pages";
 // import { MainContext } from "../../pages/context";
 
+
 /**
  *
  * todo:
  * 1. add new schedules, page not update.
  *
  */
-export default function Week(props) {
+
+export default function Week() {
   const content = useContext(MainContext);
   const dates = content.dates;
-  const [schedules, setSchedules] = useState(content.schedules);
+  const [schedules, setSchedules] = content.schedules
+
   const days = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
 
   function editSchedule(id, s) {

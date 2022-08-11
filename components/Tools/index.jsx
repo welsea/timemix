@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useContext,useState } from "react";
 import DatePicker from "react-datepicker";
 import {
   FaAngleDoubleLeft,
@@ -9,6 +9,7 @@ import {
 import "react-datepicker/dist/react-datepicker.css";
 import tool from "./index.module.css";
 import { DateTime } from "luxon";
+import { MainContext } from "../../pages";
 
 /**
  * todo:
@@ -80,9 +81,14 @@ function Tools(props) {
       num: DateTime.local().weekNumber,
     }
   );
-  
+
+
+  // get context date and update it
+  const content= useContext(MainContext);
+  const [, setPureDate] = content.date
   useEffect(() => {
-    props.changeDates(DateTime.fromJSDate(state.date));
+    let tmp=(DateTime.fromJSDate(state.date)).toISODate({format:"basic"})
+    setPureDate(tmp);
   }, [state.date]);
 
   return (

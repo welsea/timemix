@@ -2,7 +2,9 @@ import React, { Component, useState, useEffect } from "react";
 import wk from "./index.module.css";
 import PopBox from "../PopBox";
 
-export default function Weekday(props) {
+
+
+export default function Weekday(props,{data}) {
   const { day, date, coltitle, editSchedule, addSchedule, schedules } = props;
 
   const colors = {
@@ -35,7 +37,8 @@ export default function Weekday(props) {
       });
       setSchWithStyle(newss);
     }
-    return () => {};
+    return () => {
+    };
   }, [schedules]);
 
   function getStyle(schedule) {
@@ -48,7 +51,6 @@ export default function Weekday(props) {
     // grid id for start hour
     let start_id = schedule.weekday+ "-" + start_h;
     let end_id = schedule.weekday + "-" + end_h;
-    console.log()
     let height = document.getElementById(end_id).offsetHeight;
     let top = document.getElementById(start_id).offsetTop + start_m * height;
     // each hour's height is 2em.
@@ -205,3 +207,4 @@ function Square(props) {
     </>
   );
 }
+
