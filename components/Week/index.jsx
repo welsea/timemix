@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import tl from "./index.module.css";
 import Weekday from "../Weekday";
 import { MainContext } from "../../pages";
-// import { MainContext } from "../../pages/context";
 
 
 /**
@@ -24,19 +23,23 @@ export default function Week() {
     const tmpschedules = schedules.map((ws, i) => {
       // to specific weekday
       if (i === index) {
-        const newws = ws.map((item) => {
-          if (item.id === id) {
-            //update all the details
-            item.start = s.start;
-            item.end = s.end;
-            item.title = s.title;
-            item.type = s.type;
-            item.info = s.info;
-            item.shareWith = s.shareWith;
-            return item;
-          } else {
-            return item;
-          }
+        const newws = ws.map((item,i) => {
+            if (item[i].id === id) {
+              delete item.style
+              //update all the details
+              item[i].start = s.start;
+              item[i].end = s.end;
+              item[i].title = s.title;
+              item[i].type = s.type;
+              item[i].info = s.info;
+              item[i].shareWith = s.shareWith;
+              item[i].date=s.date;
+              item[i].id=id;
+              item[i].weekday=s.weekday;
+              return item;
+            } else {
+              return item;
+            }
         });
         return newws;
       } else return ws;
@@ -57,6 +60,7 @@ export default function Week() {
         return ws;
       } else return ws;
     });
+    console.log(JSON.stringify(newschedules))
     setSchedules(newschedules);
   }
 

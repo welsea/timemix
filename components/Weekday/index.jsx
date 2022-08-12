@@ -1,9 +1,16 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useContext } from "react";
 import wk from "./index.module.css";
 import PopBox from "../PopBox";
+import { MainContext } from "../../pages";
+
 
 export default function Weekday(props) {
-  const { day, date, coltitle, editSchedule, addSchedule, schedules } = props;
+  // this schedules is not the one in  useContext, this is only for one day.
+  const { day, date, coltitle, editSchedule, addSchedule,schedules} = props;
+
+  // this is for updating pages
+  const content = useContext(MainContext);
+  const [allschedules, ] = content.schedules
 
   const colors = {
     0: "#91AD70",
@@ -36,7 +43,7 @@ export default function Weekday(props) {
       setSchWithStyle(newss);
     }
     return () => {};
-  }, [schedules]);
+  }, [allschedules]);
 
   function getStyle(schedule) {
     // TODO: change to only need calculate once, when window size changed calculate again.

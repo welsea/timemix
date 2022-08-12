@@ -49,6 +49,7 @@ export default function App({ data }) {
     getSchedules().catch(console.error);
     return () => {};
   }, [pureDate]);
+  
 
   // update shcedules
   const getweek = async () => {
