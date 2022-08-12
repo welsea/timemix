@@ -2,9 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import wk from "./index.module.css";
 import PopBox from "../PopBox";
 
-
-
-export default function Weekday(props,{data}) {
+export default function Weekday(props) {
   const { day, date, coltitle, editSchedule, addSchedule, schedules } = props;
 
   const colors = {
@@ -37,8 +35,7 @@ export default function Weekday(props,{data}) {
       });
       setSchWithStyle(newss);
     }
-    return () => {
-    };
+    return () => {};
   }, [schedules]);
 
   function getStyle(schedule) {
@@ -49,7 +46,7 @@ export default function Weekday(props,{data}) {
     let end_h = parseInt(schedule.end.split(":")[0]);
     let end_m = parseFloat(schedule.end.split(":")[1]) / 60;
     // grid id for start hour
-    let start_id = schedule.weekday+ "-" + start_h;
+    let start_id = schedule.weekday + "-" + start_h;
     let end_id = schedule.weekday + "-" + end_h;
     let height = document.getElementById(end_id).offsetHeight;
     let top = document.getElementById(start_id).offsetTop + start_m * height;
@@ -103,7 +100,7 @@ export default function Weekday(props,{data}) {
               <div className={wk.date}>
                 {coltitle[1].split(".")[0] +
                   " " +
-                  months[parseInt(coltitle[1].split(".")[1])-1]}
+                  months[parseInt(coltitle[1].split(".")[1]) - 1]}
               </div>
             </div>
           );
@@ -207,4 +204,3 @@ function Square(props) {
     </>
   );
 }
-

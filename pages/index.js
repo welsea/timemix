@@ -15,14 +15,13 @@ export const MainContext = createContext();
 function getDates(value) {
   let week = value.weekNumber;
   let year = value.year;
-  let month = value.month;
   let newdates = [...Array(7)].map((x, i) => {
-    let day = DateTime.fromObject({
+    let newdate = DateTime.fromObject({
       weekYear: year,
       weekNumber: week,
       weekday: i + 1,
-    }).day;
-    return day + "." + month;
+    });
+    return newdate.day + "." + newdate.month + "." + newdate.year;
   });
   return newdates;
 }
@@ -32,46 +31,28 @@ export default function App({ data }) {
 
   const [date, setDate] = useState(DateTime.now());
   const [dates, setDates] = useState(getDates(date));
-  const [pureDate, setPureDate] = useState(date.toISODate({format:"basic"}))
+  const [pureDate, setPureDate] = useState(date.toISODate({ format: "basic" }));
 
   useEffect(() => {
-    let tmp=DateTime.fromFormat(pureDate,"yyyyMMdd")
-    setDate(tmp)
-    setDates(getDates(tmp))
-    // getSchedules(pureDate)
-    const getSchedules= async ()=>{
+    // adter chenge date -> change dates array and get schedules from DB
+    let tmp = DateTime.fromFormat(pureDate, "yyyyMMdd");
+    setDate(tmp);
+    setDates(getDates(tmp));
+    const getSchedules = async () => {
       const response = await fetch("/api/content?date=" + pureDate, {
         method: "GET",
       });
       const content = await response.json();
-      setSchedules(content)
-    }
+      setSchedules(content);
+    };
 
-    getSchedules().catch(console.error)
-    return () => {}
-  }, [pureDate])
-  
-
- async function getSchedules(date){
-    const response = await fetch("/api/content?date=" + date, {
-      method: "GET",
-    });
-    const content = await response.json();
-    setSchedules(content)
-  }
-
-  // get schedules
-  const changeweek = async () => {
-    const tmp=date.toISODate({format:"basic"})
-    const response = await fetch("/api/content?date=" + tmp, {
-      method: "PUT",
-    });
-    const content = await response.json();
-  };
+    getSchedules().catch(console.error);
+    return () => {};
+  }, [pureDate]);
 
   // update shcedules
   const getweek = async () => {
-    const tmp=date.toISODate({format:"basic"})
+    const tmp = date.toISODate({ format: "basic" });
     const response = await fetch("/api/content?date=" + tmp, {
       method: "GET",
     });
@@ -81,11 +62,16 @@ export default function App({ data }) {
   return (
     <div>
       <Header />
-      <MainContext.Provider value={{date:[pureDate,setPureDate],schedules:[schedules,setSchedules],dates}}>
+      <MainContext.Provider
+        value={{
+          date: [pureDate, setPureDate],
+          schedules: [schedules, setSchedules],
+          dates,
+        }}
+      >
         <Pane />
       </MainContext.Provider>
       {/* <a onClick={this.gotoTr}>to tr</a> */}
-      <button >{pureDate}</button>
     </div>
   );
 }
@@ -93,11 +79,10 @@ export default function App({ data }) {
 // get initial full week schedules
 export async function getServerSideProps() {
   const now = DateTime.now();
-  const mon = now.month;
   const dates = getDates(now);
   const week = dates.map((item, i) => {
     let tmp = item.split(".");
-    return tmp[0];
+    return tmp;
   });
 
   const data = [];
@@ -105,26 +90,12 @@ export async function getServerSideProps() {
     let tmp = await redis.call(
       "JSON.GET",
       "schedules_user1",
-      "$..2022." + mon + "." + item
+      "$.." + item[2] + "." + item[1] + "." + item[0]
     );
     let tmp2 = JSON.parse(tmp);
     if (tmp2.length !== 0) data.push(JSON.parse(tmp));
     else data.push(null);
   }
-
-  // const data=[...Array(7)].map(async (item,i)=>{
-  //   let tmp=await redis.call(
-  //         "JSON.GET",
-  //         "schedules_user1",
-  //         "$..2022."+mon+"."+week[i]
-  //       );
-  //   if(tmp){
-  //     let t=await JSON.parse(tmp)
-  //     return await t
-  //   }else{
-  //     return await null
-  //   }
-  // })
 
   return { props: { data } };
 }

@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useContext,useState } from "react";
+import React, { useReducer, useEffect, useContext, useState } from "react";
 import DatePicker from "react-datepicker";
 import {
   FaAngleDoubleLeft,
@@ -38,13 +38,23 @@ function ChangeWeekNum(e) {
 function changeDate(value, type) {
   const lxdate = DateTime.fromJSDate(value);
   let wn = lxdate.weekNumber;
+  let end = DateTime.fromFormat(lxdate.year + "1231", "yyyyMMdd").weekNumber;
+  let year = lxdate.year;
   if (type === "PREV") {
-    wn = lxdate.weekNumber - 1;
+    if (wn === 1) {
+      // go to the last week of previous year.
+      year = year - 1;
+      wn = DateTime.fromFormat(year + "1231", "yyyyMMdd").weekNumber;
+    } else wn = lxdate.weekNumber - 1;
   } else {
-    wn = lxdate.weekNumber + 1;
+    if (wn === end) {
+      // go to the first week of next year.
+      wn = 1;
+      year = year + 1;
+    } else wn = lxdate.weekNumber + 1;
   }
   const newlxdate = DateTime.fromObject({
-    weekYear: lxdate.weekYear,
+    weekYear: year,
     weekNumber: wn,
   }).startOf("week");
   const newdate = new Date(newlxdate);
@@ -82,12 +92,12 @@ function Tools(props) {
     }
   );
 
-
   // get context date and update it
-  const content= useContext(MainContext);
-  const [, setPureDate] = content.date
+  const content = useContext(MainContext);
+  const [, setPureDate] = content.date;
+
   useEffect(() => {
-    let tmp=(DateTime.fromJSDate(state.date)).toISODate({format:"basic"})
+    let tmp = DateTime.fromJSDate(state.date).toISODate({ format: "basic" });
     setPureDate(tmp);
   }, [state.date]);
 

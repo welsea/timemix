@@ -1,30 +1,27 @@
-import Redis from 'ioredis'
+import Redis from "ioredis";
 import { DateTime } from "luxon";
 
-let redis = new Redis(process.env.REDIS_URL)
+let redis = new Redis(process.env.REDIS_URL);
 
 export default async function handler(req, res) {
-  if(req.method==="GET"){
-      // get schedules
-    const date=DateTime.fromFormat(req.query.date,"yyyyMMdd")
-    const result=await getData(date)
-    res.status(200).json(result)
-  }else if(req.method==="PUT"){
+  if (req.method === "GET") {
+    // get schedules
+    const date = DateTime.fromFormat(req.query.date, "yyyyMMdd");
+    const result = await getData(date);
+    res.status(200).json(result);
+  } else if (req.method === "PUT") {
     // edit/add schedules
-    const date=DateTime.fromFormat(req.query.date,"yyyyMMdd")
-    const result=await getData(date)
-    res.status(200).json(result)
+    const date = DateTime.fromFormat(req.query.date, "yyyyMMdd");
+    const result = await getData(date);
+    res.status(200).json(result);
   }
-
 }
-
-async function getData(date){
-  const year = date.year;
-  const mon = date.month
+// get schedules
+async function getData(date) {
   const dates = getDates(date);
   const week = dates.map((item, i) => {
     let tmp = item.split(".");
-    return tmp[0];
+    return tmp;
   });
 
   const data = [];
@@ -32,26 +29,26 @@ async function getData(date){
     let tmp = await redis.call(
       "JSON.GET",
       "schedules_user1",
-      "$.."+year+"." + mon + "." + item
+      "$.." + item[2] + "." + item[1] + "." + item[0]
     );
     let tmp2 = JSON.parse(tmp);
     if (tmp2.length !== 0) data.push(JSON.parse(tmp));
     else data.push(null);
   }
-  return data
+  return data;
 }
 
+// get dates array
 function getDates(value) {
   let week = value.weekNumber;
   let year = value.year;
-  let month = value.month;
   let newdates = [...Array(7)].map((x, i) => {
-    let day = DateTime.fromObject({
+    let newdate = DateTime.fromObject({
       weekYear: year,
       weekNumber: week,
       weekday: i + 1,
-    }).day;
-    return day + "." + month;
+    });
+    return newdate.day + "." + newdate.month + "." + newdate.year;
   });
   return newdates;
 }
