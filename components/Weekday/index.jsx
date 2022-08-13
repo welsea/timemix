@@ -37,8 +37,9 @@ export default function Weekday(props) {
   useEffect(() => {
     if (schedules) {
       const newss = schedules.map((s) => {
-        s.style = getStyle(s);
-        return s;
+        let tmp=Object.assign(s)
+        tmp.style = getStyle(tmp);
+        return tmp;
       });
       setSchWithStyle(newss);
     }

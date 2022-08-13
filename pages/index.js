@@ -51,15 +51,6 @@ export default function App({ data }) {
   }, [pureDate]);
   
 
-  // update shcedules
-  const getweek = async () => {
-    const tmp = date.toISODate({ format: "basic" });
-    const response = await fetch("/api/content?date=" + tmp, {
-      method: "GET",
-    });
-    const content = await response.json();
-  };
-
   return (
     <div>
       <Header />
@@ -100,3 +91,14 @@ export async function getServerSideProps() {
 
   return { props: { data } };
 }
+
+
+// update shcedules
+// async function update(){
+//   let tmp = await redis.call(
+//     "JSON.GET",
+//     "schedules_user1",
+//     "$..2022.8.8"
+//   );
+//   console.log(tmp)
+// };
