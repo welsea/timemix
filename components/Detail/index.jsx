@@ -22,6 +22,10 @@ export default function Detail(props) {
         }
     ]
 
+    function handleDel(){
+
+    }
+
     function gotoUser(id){
         Router.push({
           pathname:'/user',
@@ -54,7 +58,10 @@ export default function Detail(props) {
                 <td>{content.info}</td>
             </tr>
         </tbody></table>
-        <div className={d.addBtn} onClick={()=>gotoEdit(true)}>Edit</div>
+        <div className={d.btnrow}>
+            <div className={d.delbtn} onClick={handleDel}>Delete</div>
+            <div className={d.addBtn} onClick={()=>gotoEdit(true)}>Edit</div>
+        </div>
     </div>
 
   )

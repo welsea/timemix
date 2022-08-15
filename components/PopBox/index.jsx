@@ -117,7 +117,7 @@ export default function PopBox(props) {
           {days[day - 1] + ", " + showD + " " + mon[showM - 1]}
         </div>
         {showEdit ? (
-          <EditDetail content={content} operate finishEdit={handleConfirm} />
+          <EditDetail content={content} operate={operate} finishEdit={handleConfirm} />
         ) : (
           <Detail content={content} gotoEdit={gotoEdit} />
         )}

@@ -21,6 +21,26 @@
       border: 1px solid #c4c1c1;
   }
 
+  .btnrow{
+    display: flex;
+  }
+
+  .btnrow div{
+    width: 50%;
+    padding: 0.5em 1em;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .addBtn{
+    background-color: #E98B2A;
+    color: white;
+  }
+  .delbtn{
+    background-color: #b80e0e;
+    color: white;
+  }
+
 
   .addBtn{
     background-color: #E98B2A;

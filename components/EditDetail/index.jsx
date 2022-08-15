@@ -186,8 +186,9 @@ export default function EditDetail(props) {
           </tr>
         </tbody>
       </table>
-      <div className={ed.addBtn} onClick={() => finishEdit(content)}>
-        Confirm
+      <div className={ed.btnrow}>
+        <div className={ed.celbtn} onClick={()=>operate(false)}>Cancel</div>
+        <div className={ed.addBtn} onClick={() => finishEdit(content)}>Confirm</div>
       </div>
     </div>
   );
