@@ -9,37 +9,37 @@ export default async function handler(req, res) {
     const date = DateTime.fromFormat(req.query.date, "yyyyMMdd");
     const result = await getData(date);
     res.status(200).json(result);
-  } else if (req.method === "PUT") {
-    let p=req.params
-    res.status(200).json(p);
-
-    // edit/add schedules
-    // let data=req.query.s
-    // let date=data.date.split(".")
-    // let is=req.query.isEmpty
-    // if(is){
-    //     // add new schedule
-    //     let tmp1 = await redis.call(
-    //       "JSON.SET",
-    //       "schedules_user1",
-    //       `$.${date[2]}.${date[1]}.${date[0]}`
-    //     );
-    //   }
-    //   let tmp2 = await redis.call(
-    //     "JSON.SET",
-    //     "schedules_user1",
-    //     `$..${date[2]}.${date[1]}.${date[0]} \'${data}\'`
-    //   );
-    //   res.status(200).json("add");
-    // }else{
-    //   // edit the exist schedule
-    //   let tmp = await redis.call(
-    //     "JSON.SET",
-    //     "schedules_user1",
-    //     `$..${date[2]}.${date[1]}.${date[0]} \'${data}\'`
-    //   );
-    //   res.status(200).json("edit");
+  } else if (req.method === "POST") {
+    let p =JSON.parse(req.body)
+    //edit/add schedules
+    let data=p.content[0]
+    let date=data[0].date.split(".")
+    let is=p.isEmpty
+    if(is){
+        // add new schedule
+        let tmp1 = await redis.call(
+          "JSON.SET",
+          "schedules_user1",
+          "$."+date[2]+"."+date[1]+"."+date[0]
+        );
+      let tmp2 = await redis.call(
+        "JSON.SET",
+        "schedules_user1",
+        "$.."+date[2]+"."+date[1]+"."+date[0],
+        JSON.stringify(data)
+      );
+      res.status(200).json("add");
+    }else{
+      // edit the exist schedule
+      let tmp = await redis.call(
+        "JSON.SET",
+        "schedules_user1",
+        "$.."+date[2]+"."+date[1]+"."+date[0],
+        JSON.stringify(data)
+      );
+      res.status(200).json("edit");
     }
+  }
 }
 
 

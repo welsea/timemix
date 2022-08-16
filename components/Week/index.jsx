@@ -19,10 +19,13 @@ export default function Week() {
   const days = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
 
   async function add(s,is){
-    //`/api/content?isEmpty=${is}&s=${JSON.stringify(s)}`
-    const response = await fetch("/api/content", {
-      method: "PUT",
-      params:{name:"test"}
+    const obj={
+      isEmpty:is,
+      content:s
+    }
+    const response = await fetch(`/api/content`, {
+      method: "POST",
+      body:JSON.stringify(obj)
     });
     const content = await response.json();
     console.log(content)
@@ -54,7 +57,7 @@ export default function Week() {
       } else return ws;
     });
     // schedules of the day.
-    add(tmpschedules[index],false)
+    // add(tmpschedules[index],false)
     setSchedules(tmpschedules);
   }
 
@@ -66,14 +69,15 @@ export default function Week() {
     const newschedules = schedules.map((ws, i) => {
       if (i === index) {
         if (ws === null) {
-          ws = [news];
+          
+          ws = [[news]];
         } else {
-          ws.push(news);
+          ws.push([news]);
         }
         return ws;
       } else return ws;
     });
-    add(newschedules[index],isEmpty)
+    // add(newschedules[index],isEmpty)
     setSchedules(newschedules);
   }
 

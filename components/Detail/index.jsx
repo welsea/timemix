@@ -23,6 +23,8 @@ export default function Detail(props) {
     ]
 
     function handleDel(){
+        // pass the id to api/content
+        // add del function in api/content
 
     }
 

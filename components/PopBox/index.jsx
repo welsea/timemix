@@ -88,13 +88,17 @@ export default function PopBox(props) {
 
   function handleConfirm(newcontent) {
     const s = { ...newcontent, date: date, weekday: day };
+    delete s.startPick
+    delete s.endPick
+    s.style=undefined
+    delete s.style
     if (stype === 0) {
       const new_id = nanoid();
       addSchedule(new_id, s);
     } else {
       editSchedule(schedule.id, s);
     }
-    
+    console.log(s)
     operate(false);
   }
 
