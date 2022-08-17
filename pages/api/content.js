@@ -20,14 +20,9 @@ export default async function handler(req, res) {
         let tmp1 = await redis.call(
           "JSON.SET",
           "schedules_user1",
-          "$."+date[2]+"."+date[1]+"."+date[0]
+          "$."+date[2]+"."+date[1]+"."+date[0],
+          JSON.stringify(data)
         );
-      let tmp2 = await redis.call(
-        "JSON.SET",
-        "schedules_user1",
-        "$.."+date[2]+"."+date[1]+"."+date[0],
-        JSON.stringify(data)
-      );
       res.status(200).json("add");
     }else{
       // edit the exist schedule
@@ -37,6 +32,7 @@ export default async function handler(req, res) {
         "$.."+date[2]+"."+date[1]+"."+date[0],
         JSON.stringify(data)
       );
+      console.log(data)
       res.status(200).json("edit");
     }
   }

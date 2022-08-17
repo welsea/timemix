@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import tl from "./index.module.css";
 import Weekday from "../Weekday";
 import { MainContext } from "../../pages";
+import { FaTruckMonster } from "react-icons/fa";
 
 
 /**
@@ -27,8 +28,7 @@ export default function Week() {
       method: "POST",
       body:JSON.stringify(obj)
     });
-    const content = await response.json();
-    console.log(content)
+    // const content = await response.json();
   };
 
   function editSchedule(id, s) {
@@ -57,7 +57,8 @@ export default function Week() {
       } else return ws;
     });
     // schedules of the day.
-    // add(tmpschedules[index],false)
+    console.log(tmpschedules[index])
+    add(tmpschedules[index],false)
     setSchedules(tmpschedules);
   }
 
@@ -69,15 +70,15 @@ export default function Week() {
     const newschedules = schedules.map((ws, i) => {
       if (i === index) {
         if (ws === null) {
-          
           ws = [[news]];
         } else {
-          ws.push([news]);
+          let i=ws.length-1
+          ws[i].push(news)
         }
         return ws;
       } else return ws;
     });
-    // add(newschedules[index],isEmpty)
+    add(newschedules[index],isEmpty)
     setSchedules(newschedules);
   }
 

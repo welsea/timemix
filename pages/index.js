@@ -91,14 +91,3 @@ export async function getServerSideProps() {
 
   return { props: { data } };
 }
-
-
-// update shcedules
-// async function update(){
-//   let tmp = await redis.call(
-//     "JSON.GET",
-//     "schedules_user1",
-//     "$..2022.8.8"
-//   );
-//   console.log(tmp)
-// };

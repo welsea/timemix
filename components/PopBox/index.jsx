@@ -98,7 +98,6 @@ export default function PopBox(props) {
     } else {
       editSchedule(schedule.id, s);
     }
-    console.log(s)
     operate(false);
   }
 
