@@ -21,6 +21,7 @@ export default function PopBox(props) {
     day,
     operate,
     hour,
+    handleDel
   } = props;
 
   const [showEdit, setShowEdit] = useState(false);
@@ -57,6 +58,7 @@ export default function PopBox(props) {
     title: "",
     startPick: hour + ":00",
     endPick: hour + ":15",
+    id:""
   });
 
   useEffect(() => {
@@ -71,6 +73,8 @@ export default function PopBox(props) {
         shareWith: schedule.shareWith,
         startPick: schedule.start,
         endPick: schedule.end,
+        id:schedule.id,
+        date:schedule.date
       });
     } else {
       setShowEdit(true);
@@ -90,8 +94,6 @@ export default function PopBox(props) {
     const s = { ...newcontent, date: date, weekday: day };
     delete s.startPick
     delete s.endPick
-    s.style=undefined
-    delete s.style
     if (stype === 0) {
       const new_id = nanoid();
       addSchedule(new_id, s);
@@ -122,7 +124,7 @@ export default function PopBox(props) {
         {showEdit ? (
           <EditDetail content={content} operate={operate} finishEdit={handleConfirm} />
         ) : (
-          <Detail content={content} gotoEdit={gotoEdit} />
+          <Detail content={content} handleDel={handleDel} operate={operate} gotoEdit={gotoEdit} />
         )}
       </div>
     </div>

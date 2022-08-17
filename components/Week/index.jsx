@@ -28,7 +28,6 @@ export default function Week() {
       method: "POST",
       body:JSON.stringify(obj)
     });
-    // const content = await response.json();
   };
 
   function editSchedule(id, s) {
@@ -37,27 +36,27 @@ export default function Week() {
       // to specific weekday
       if (i === index) {
         const newws = ws.map((item,i) => {
-            if (item[i].id === id) {
-              //update all the details
-              item[i].start = s.start;
-              item[i].end = s.end;
-              item[i].title = s.title;
-              item[i].type = s.type;
-              item[i].info = s.info;
-              item[i].shareWith = s.shareWith;
-              item[i].date=s.date;
-              item[i].id=id;
-              item[i].weekday=s.weekday;
-              return item;
-            } else {
-              return item;
-            }
+            const tmpitem=item.map((x,i)=>{
+              let iid=x.id
+              if (id===iid) {
+                //update all the details
+                x.start = s.start;
+                x.end = s.end;
+                x.title = s.title;
+                x.type = s.type;
+                x.info = s.info;
+                x.shareWith = s.shareWith;
+                x.date=s.date;
+                x.weekday=s.weekday;
+              }
+              return x
+            });
+            return tmpitem
         });
         return newws;
       } else return ws;
     });
     // schedules of the day.
-    console.log(tmpschedules[index])
     add(tmpschedules[index],false)
     setSchedules(tmpschedules);
   }

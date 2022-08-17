@@ -3,7 +3,7 @@ import d from './index.module.css'
 import Router from 'next/router';
 
 export default function Detail(props) {
-    const {content,gotoEdit}=props
+    const {content,gotoEdit,handleDel,operate}=props
     const typeArr=[
         {
             id:0,
@@ -22,11 +22,6 @@ export default function Detail(props) {
         }
     ]
 
-    function handleDel(){
-        // pass the id to api/content
-        // add del function in api/content
-
-    }
 
     function gotoUser(id){
         Router.push({
@@ -36,6 +31,13 @@ export default function Detail(props) {
           }
         },'/user/@'+id)
       }
+
+    function clickDel(){
+        if(window.confirm("Are you sure to delete this event?")){
+            handleDel(content.id,content.date)
+            operate(false)
+        }
+    }
   return (
       <div>
         <table className={d.table}><tbody>
@@ -61,7 +63,7 @@ export default function Detail(props) {
             </tr>
         </tbody></table>
         <div className={d.btnrow}>
-            <div className={d.delbtn} onClick={handleDel}>Delete</div>
+            <div className={d.delbtn} onClick={clickDel}>Delete</div>
             <div className={d.addBtn} onClick={()=>gotoEdit(true)}>Edit</div>
         </div>
     </div>
