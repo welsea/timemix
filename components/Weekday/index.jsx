@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect, useContext } from "react";
 import wk from "./index.module.css";
 import PopBox from "../PopBox";
 import { MainContext } from "../../pages";
+import { compose } from "@reduxjs/toolkit";
 
 export default function Weekday(props) {
   // this schedules is not the one in  useContext, this is only for one day.
@@ -9,7 +10,7 @@ export default function Weekday(props) {
 
   // this is for updating pages
   const content = useContext(MainContext);
-  const [allschedules] = content.schedules;
+  const [allschedules, setAllSchedules] = content.schedules;
 
   const colors = {
     0: "#91AD70",
@@ -85,6 +86,18 @@ export default function Weekday(props) {
     schedules.forEach((x, i) => {
       if (x.id === id) index = i;
     });
+    // todo: change all thechedules
+    // setAllSchedules()
+    const tmpall = allschedules.map((wd, i) => {
+      // into specific weekday
+      if (i === day - 1) {
+        // empty layer [0]
+        wd[0].splice(index,1)
+        return wd
+      }
+      return wd;
+    });
+    setAllSchedules(tmpall)
     Del(id,date,index)
   }
 

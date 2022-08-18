@@ -81,16 +81,6 @@ export default function EditDetail(props) {
     setContent({ ...content, end: e.target.value, endPick: e.target.value });
   }
 
-  function handleShare(e) {
-    if (e.key === "Enter" && e.target.value.trim() !== "") {
-      const tmp = e.target.value.split(",");
-      const sw = tmp.filter((value, index) => {
-        return index === tmp.indexOf(value);
-      });
-      setContent({ ...content, shareWith: sw });
-    }
-  }
-
   return (
     <div>
       <table className={ed.table}>
@@ -159,18 +149,6 @@ export default function EditDetail(props) {
                   );
                 })}
               </select>
-            </td>
-          </tr>
-          <tr>
-            <td>Share With:</td>
-            <td>
-              <span className={ed.note}>
-                * Multiple IDs should separate by "," (press Enter to finish).
-              </span>
-              <input
-                defaultValue={content.shareWith.join(", ")}
-                onKeyUp={(e) => handleShare(e)}
-              />
             </td>
           </tr>
           <tr>

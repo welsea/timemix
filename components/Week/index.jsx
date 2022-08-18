@@ -45,7 +45,7 @@ export default function Week() {
                 x.title = s.title;
                 x.type = s.type;
                 x.info = s.info;
-                x.shareWith = s.shareWith;
+                // x.shareWith = s.shareWith;
                 x.date=s.date;
                 x.weekday=s.weekday;
               }

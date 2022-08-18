@@ -54,11 +54,11 @@ export default function PopBox(props) {
     end: hour + ":15",
     type: 0,
     info: "",
-    shareWith: [],
     title: "",
     startPick: hour + ":00",
     endPick: hour + ":15",
-    id:""
+    id:"",
+    share:false
   });
 
   useEffect(() => {
@@ -70,11 +70,11 @@ export default function PopBox(props) {
         type: schedule.type,
         title: schedule.title,
         info: schedule.info,
-        shareWith: schedule.shareWith,
         startPick: schedule.start,
         endPick: schedule.end,
         id:schedule.id,
-        date:schedule.date
+        date:schedule.date,
+        share:schedule.share
       });
     } else {
       setShowEdit(true);
@@ -105,6 +105,7 @@ export default function PopBox(props) {
 
   const showM = parseInt(date.split(".")[1]);
   const showD = date.split(".")[0];
+  const showDate=days[day - 1] + ", " + showD + " " + mon[showM - 1]
 
   return (
     <div className={pop.popup_box}>
@@ -119,7 +120,7 @@ export default function PopBox(props) {
         </div>
         <div className={pop.date}>
           {" "}
-          {days[day - 1] + ", " + showD + " " + mon[showM - 1]}
+          {showDate}
         </div>
         {showEdit ? (
           <EditDetail content={content} operate={operate} finishEdit={handleConfirm} />

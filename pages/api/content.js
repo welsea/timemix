@@ -6,6 +6,11 @@ let redis = new Redis(process.env.REDIS_URL);
 export default async function handler(req, res) {
   let method = req.method;
   switch (method) {
+    case "GET":
+      const dateg = DateTime.fromFormat(req.query.date, "yyyyMMdd");
+      const datag = await getData(dateg);
+      res.status("200").json(datag)
+      break
     case "PUT":
       let dateP = DateTime.fromFormat(req.query.date, "yyyyMMdd");
       let result = await getData(dateP);
