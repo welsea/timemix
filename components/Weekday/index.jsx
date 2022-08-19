@@ -68,6 +68,7 @@ export default function Weekday(props) {
     };
     return stylecss;
   }
+
   async function Del(id, date, index) {
     // pass id, date
     const obj = {
@@ -92,13 +93,13 @@ export default function Weekday(props) {
       // into specific weekday
       if (i === day - 1) {
         // empty layer [0]
-        wd[0].splice(index,1)
-        return wd
+        wd[0].splice(index, 1);
+        return wd;
       }
       return wd;
     });
-    setAllSchedules(tmpall)
-    Del(id,date,index)
+    setAllSchedules(tmpall);
+    Del(id, date, index);
   }
 
   return (

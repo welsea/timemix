@@ -12,8 +12,29 @@ export default async function handler(req, res) {
       res.status("200").json(datag)
       break
     case "PUT":
-      let dateP = DateTime.fromFormat(req.query.date, "yyyyMMdd");
-      let result = await getData(dateP);
+      //change share status
+      let datap=JSON.parse(req.body)
+      let datep=datap.date.split(".")
+      let idp=datap.id
+      let indexp=datap.index
+      let pid = await redis.call(
+        "JSON.GET",
+        "schedules_user1",
+        `$..${datep[2]}.${datep[1]}.${datep[0]}[${indexp}].id`
+      );
+      pid=JSON.parse(pid)
+      if (pid[0] === idp) {
+        let t=await redis.call(
+          "JSON.SET",
+          "schedules_user1",
+          `$..${datep[2]}.${datep[1]}.${datep[0]}[${indexp}].share`,
+          true
+        );
+        res.status(200).json("shared");
+      }else{
+        res.status(500).json("fail")
+      }
+
       res.status(200).json(result);
       break;
     case "POST":

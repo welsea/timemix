@@ -58,7 +58,7 @@ export default function PopBox(props) {
     startPick: hour + ":00",
     endPick: hour + ":15",
     id:"",
-    share:false
+    share:false,
   });
 
   useEffect(() => {
@@ -74,7 +74,8 @@ export default function PopBox(props) {
         endPick: schedule.end,
         id:schedule.id,
         date:schedule.date,
-        share:schedule.share
+        share:schedule.share,
+        weekday:schedule.weekday
       });
     } else {
       setShowEdit(true);

@@ -11,9 +11,6 @@
       border: 1px solid #c4c1c1;
   }
 
-  .btnrow{
-    display: flex;
-  }
   .time{
     display: flex;
     font-size: 0.9em;
