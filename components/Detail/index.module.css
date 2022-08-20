@@ -67,3 +67,33 @@
   .title{
     font-size: 1.4em;
   }
+
+  .copied{
+    font-size: 0.8em;
+    color: #E98B2A;
+  }
+  .copybtn{
+    border:none;
+    background-color: #E98B2A;
+    color:white;
+    border-radius: 0.2em;
+    padding: 0.3em 0.5em;
+    margin-right: 0.3em;
+  }
+  .shareIpt{
+    padding: 0.3em;
+    width: 100%;
+  }
+
+  .shareRow{
+    display: flex;
+    /* align-content: end; */
+    align-items: center;
+    margin-top: 3em;
+    flex-wrap: wrap;
+  }
+  .note{
+    color:#E98B2A;
+    font-size: 0.8em;
+    flex:0 0 100%;
+  }

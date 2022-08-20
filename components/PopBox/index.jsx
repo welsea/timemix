@@ -126,7 +126,7 @@ export default function PopBox(props) {
         {showEdit ? (
           <EditDetail content={content} operate={operate} finishEdit={handleConfirm} />
         ) : (
-          <Detail content={content} handleDel={handleDel} operate={operate} gotoEdit={gotoEdit} />
+          <Detail content={content} handleDel={handleDel} operate={operate} gotoEdit={gotoEdit} share={content.share} />
         )}
       </div>
     </div>

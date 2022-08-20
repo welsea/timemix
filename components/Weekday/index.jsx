@@ -58,8 +58,8 @@ export default function Weekday(props) {
     let end_id = schedule.weekday + "-" + end_h;
     let height = document.getElementById(end_id).offsetHeight;
     let top = document.getElementById(start_id).offsetTop + start_m * height;
-    // each hour's height is 2em.
-    let totalh = (height * (end_h - start_h - 1 + end_m - start_m)).toFixed(2);
+    // use px instead of em. px more precise
+    let totalh = (height * (end_h - start_h + end_m - start_m)).toFixed(2);
     // the style for each schedule
     let stylecss = {
       height: totalh + "px",

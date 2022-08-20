@@ -5,7 +5,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { MainContext } from "../../pages";
 
 export default function Detail(props) {
-  const {content, gotoEdit, handleDel, operate } = props;
+  const { content, gotoEdit, handleDel, operate, share } = props;
   const typeArr = [
     {
       id: 0,
@@ -25,15 +25,17 @@ export default function Detail(props) {
   ];
   const data = useContext(MainContext);
   const [schedules, setSchedules] = data.schedules;
-  const [isShare, setIsShare] = useState(false)
+  const [isShare, setIsShare] = useState(false);
+  const [isCopied, setisCopied] = useState(false);
 
   useEffect(() => {
-    setIsShare(props.content.share)
+    // setIsShare(props.content.share)
     return () => {
-    }
-  }, [])
-  
-  async function share(id, date, index) {
+      console.log("share:", isShare || share);
+    };
+  }, [props.share]);
+
+  async function changeShare(id, date, index) {
     // pass id, date
     const obj = {
       id,
@@ -48,35 +50,35 @@ export default function Detail(props) {
   }
 
   function handleShare() {
-    if(!content.share){
-          if (
-      window.confirm(
-        "Are you sure to share this event? \nYou will be unable to edit this event."
-      )
-    ) {
-      let index = null;
-      let id = content.id;
-      let wd=content.weekday-1
-      schedules[wd][0].forEach((x, i) => {
-        if (x.id === id) index = i;
-      });
-      // todo: change all thechedules
-      // setAllSchedules()
-      const tmpall = schedules.map((wd, i) => {
-        // into specific weekday
-        if (i === content.weekday - 1) {
-          // empty layer [0]
-          wd[0][index].share = true;
+    if (!share) {
+      if (
+        window.confirm(
+          "Are you sure to share this event? \nYou will be unable to edit this event."
+        )
+      ) {
+        let index = null;
+        let id = content.id;
+        let wd = content.weekday - 1;
+        schedules[wd][0].forEach((x, i) => {
+          if (x.id === id) index = i;
+        });
+        // todo: change all thechedules
+        // setAllSchedules()
+        const tmpall = schedules.map((wd, i) => {
+          // into specific weekday
+          if (i === content.weekday - 1) {
+            // empty layer [0]
+            wd[0][index].share = true;
+            return wd;
+          }
           return wd;
-        }
-        return wd;
-      });
-      setSchedules(tmpall);
-      share(id, content.date, index);
-      setIsShare(true)
-    }  
-    }else{
-        alert("This event already been shared.")
+        });
+        setSchedules(tmpall);
+        changeShare(id, content.date, index);
+        setIsShare(true);
+      }
+    } else {
+      alert("This event already been shared.");
     }
   }
 
@@ -88,12 +90,13 @@ export default function Detail(props) {
   }
 
   function handleCopy(e) {
-    e.clipoarddata.setData("text/plain", content.id);
-    console.log();
+    navigator.clipboard.writeText(content.id);
+
+    setisCopied(true);
   }
 
   function handleEdit() {
-    if (!content.share) gotoEdit(true);
+    if (!(share || isShare)) gotoEdit(true);
     else alert("can't edit a shared event.");
   }
   return (
@@ -118,12 +121,19 @@ export default function Detail(props) {
           <tr>
             <td>{content.info}</td>
           </tr>
-          {isShare && (
-            <tr>
-              <td>
-                <input disabled value={content.id} />{" "}
-                <button onCopy={(e) => setCopiedValue(content.id)}>Copy</button>
+          {(isShare || share) && (
+            <tr className={d.shareRow}>
+              
+              <td style={{"flex":"auto"}}>
+                <input disabled value={content.id} className={d.shareIpt} />
               </td>
+              <td style={{"flex":"1 1 auto"}}>
+                <button onClick={(e) => handleCopy(e)} className={d.copybtn}>
+                  Copy
+                </button>
+                {isCopied && <span className={d.copied}>cpoied!</span>}
+              </td>
+              <td className={d.note}>Copy to share with others.</td>
             </tr>
           )}
         </tbody>
@@ -132,7 +142,7 @@ export default function Detail(props) {
         <BiShare onClick={handleShare} />
         <BiEditAlt
           onClick={handleEdit}
-          color={isShare ? "#d4d4d4" : "#FFB11B"}
+          color={isShare || share ? "#d4d4d4" : "#FFB11B"}
         />
         <MdDeleteOutline onClick={clickDel} />
       </div>
