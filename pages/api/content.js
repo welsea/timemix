@@ -19,14 +19,14 @@ export default async function handler(req, res) {
       let indexp=datap.index
       let pid = await redis.call(
         "JSON.GET",
-        "schedules_user1",
+        "ushsudhsk",
         `$..${datep[2]}.${datep[1]}.${datep[0]}[${indexp}].id`
       );
       pid=JSON.parse(pid)
       if (pid[0] === idp) {
         let t=await redis.call(
           "JSON.SET",
-          "schedules_user1",
+          "ushsudhsk",
           `$..${datep[2]}.${datep[1]}.${datep[0]}[${indexp}].share`,
           true
         );
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
         // add new schedule
         let tmp1 = await redis.call(
           "JSON.SET",
-          "schedules_user1",
+          "ushsudhsk",
           "$." + date[2] + "." + date[1] + "." + date[0],
           JSON.stringify(data)
         );
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
         // edit the exist schedule
         let tmp = await redis.call(
           "JSON.SET",
-          "schedules_user1",
+          "ushsudhsk",
           "$.." + date[2] + "." + date[1] + "." + date[0],
           JSON.stringify(data)
         );
@@ -70,14 +70,14 @@ export default async function handler(req, res) {
       let index = pdel.index;
       let cid = await redis.call(
         "JSON.GET",
-        "schedules_user1",
+        "ushsudhsk",
         `$..${dated[2]}.${dated[1]}.${dated[0]}[${index}].id`
       );
       cid=JSON.parse(cid)
       if (cid[0] === id) {
         let t=await redis.call(
           "JSON.DEL",
-          "schedules_user1",
+          "ushsudhsk",
           `$..${dated[2]}.${dated[1]}.${dated[0]}[${index}]`
         );
         res.status(200).json("del");
@@ -100,7 +100,7 @@ async function getData(date) {
   for (const item of week) {
     let tmp = await redis.call(
       "JSON.GET",
-      "schedules_user1",
+      "ushsudhsk",
       "$.." + item[2] + "." + item[1] + "." + item[0]
     );
     let tmp2 = JSON.parse(tmp);

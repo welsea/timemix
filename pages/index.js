@@ -10,6 +10,7 @@ let redis = new Redis(process.env.REDIS_URL);
 
 // useContext
 export const MainContext = createContext();
+// export const UserContext = createContext()
 
 // get whole week dates
 function getDates(value) {
@@ -81,7 +82,7 @@ export async function getServerSideProps() {
   for (const item of week) {
     let tmp = await redis.call(
       "JSON.GET",
-      "schedules_user1",
+      "ushsudhsk",
       "$.." + item[2] + "." + item[1] + "." + item[0]
     );
     let tmp2 = JSON.parse(tmp);
