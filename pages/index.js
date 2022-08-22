@@ -4,13 +4,16 @@ import { createContext, useState, useEffect } from "react";
 import Header from "../components/Header";
 import Pane from "../components/Pane";
 import { DateTime } from "luxon";
+import Note from "../components/Note";
 
 // connect redis
 let redis = new Redis(process.env.REDIS_URL);
 
 // useContext
+// schedules and dates
 export const MainContext = createContext();
-// export const UserContext = createContext()
+// user info
+export const UserContext = createContext();
 
 // get whole week dates
 function getDates(value) {
@@ -28,8 +31,8 @@ function getDates(value) {
 }
 
 export default function App({ data }) {
-  const [schedules, setSchedules] = useState(data);
-
+  const [schedules, setSchedules] = useState(data.schedules);
+  const [user, setUser] = useState(data.user[0]);
   const [date, setDate] = useState(DateTime.now());
   const [dates, setDates] = useState(getDates(date));
   const [pureDate, setPureDate] = useState(date.toISODate({ format: "basic" }));
@@ -50,21 +53,23 @@ export default function App({ data }) {
     getSchedules().catch(console.error);
     return () => {};
   }, [pureDate]);
-  
 
   return (
     <div>
-      <Header />
+      <UserContext.Provider value={{ user: [user, setUser] }}>
+        <Header />
+      </UserContext.Provider>
+      <Note />
       <MainContext.Provider
         value={{
           date: [pureDate, setPureDate],
           schedules: [schedules, setSchedules],
           dates,
+          user: [user, setUser],
         }}
       >
         <Pane />
       </MainContext.Provider>
-      {/* <a onClick={this.gotoTr}>to tr</a> */}
     </div>
   );
 }
@@ -89,6 +94,16 @@ export async function getServerSideProps() {
     if (tmp2.length !== 0) data.push(JSON.parse(tmp));
     else data.push(null);
   }
+  // example user
+  const tmpuser = await redis.call("JSON.GET", "users", "$..ushsudhsk");
+  const user = JSON.parse(tmpuser);
 
-  return { props: { data } };
+  return {
+    props: {
+      data: {
+        schedules: data,
+        user: user,
+      },
+    },
+  };
 }
