@@ -4,21 +4,47 @@
     margin: auto;
   }
 
-  .table tr{
-    /* width:100%; */
-    display: flex;
-    padding: 0 0 1em;
-    align-items: center;
-  }
-  .table td:first-child{
-    font-size: 0.8em;
-    color: #bcb6ac;
-    margin-right: 0.5em;
-  }
+
   .table select{
     padding: 0.5em;
       margin: 0.2em 0;
       border: 1px solid #c4c1c1;
+  }
+
+  .time{
+    display: flex;
+    font-size: 0.9em;
+    justify-content: space-between;
+    padding: 0.5em 0;
+  }
+  .smalltime{
+    display: flex;
+    align-items: center;
+  }
+
+  .btnrow{
+    border: 1px solid #c4c1c1;
+    border-left: none;
+    border-right: none;
+    padding: 0.5em 0;
+    display: flex;
+    justify-content: space-around;
+    color:#FFB11B;
+  }
+  /* .btnrow div{
+    width: 50%;
+    padding: 0.5em 1em;
+    text-align: center;
+    font-weight: 600;
+  } */
+
+  .addBtn{
+    background-color: #E98B2A;
+    color: white;
+  }
+  .delbtn{
+    background-color: #b80e0e;
+    color: white;
   }
 
 
@@ -42,12 +68,32 @@
     font-size: 1.4em;
   }
 
-  .name{
-    margin-right: 0.5em;
-    text-decoration: underline;
+  .copied{
+    font-size: 0.8em;
     color: #E98B2A;
   }
+  .copybtn{
+    border:none;
+    background-color: #E98B2A;
+    color:white;
+    border-radius: 0.2em;
+    padding: 0.3em 0.5em;
+    margin-right: 0.3em;
+  }
+  .shareIpt{
+    padding: 0.3em;
+    width: 100%;
+  }
 
-  .namelist{
+  .shareRow{
     display: flex;
+    /* align-content: end; */
+    align-items: center;
+    margin-top: 3em;
+    flex-wrap: wrap;
+  }
+  .note{
+    color:#E98B2A;
+    font-size: 0.8em;
+    flex:0 0 100%;
   }

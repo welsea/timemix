@@ -27,13 +27,25 @@
       border: 1px solid #c4c1c1;
   }
 
+  .btnrow{
+    display: flex;
+  }
+
+  .btnrow div{
+    width: 50%;
+    padding: 0.5em 1em;
+    text-align: center;
+    font-weight: 600;
+  }
 
   .addBtn{
     background-color: #E98B2A;
-    padding: 0.5em 1em;
     color: white;
-    text-align: center;
-    font-weight: 600;
+  }
+  .celbtn{
+    background-color: white;
+    color: #E98B2A;
+    border: 2px #E98B2A solid;
   }
 
   .note{

@@ -14,3 +14,9 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.pane{
+  margin: 0 auto;
+  width: fit-content;
+  padding: 2em;
+}
