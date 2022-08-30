@@ -131,7 +131,7 @@ function Tools(props) {
           />
         </div>
       </div>
-      <Search />
+      {/* <Search /> */}
     </div>
   );
 }
