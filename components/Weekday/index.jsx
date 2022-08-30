@@ -33,6 +33,8 @@ export default function Weekday(props) {
     "Nov",
     "Dec",
   ];
+  const [tz] = content.tz;
+  const adapt = tz - 2;
 
   useEffect(() => {
     if (schedules) {
@@ -44,14 +46,14 @@ export default function Weekday(props) {
       setSchWithStyle(newss);
     }
     return () => {};
-  }, [allschedules]);
+  }, [allschedules, tz]);
 
   function getStyle(schedule) {
     // TODO: change to only need calculate once, when window size changed calculate again.
     //get the position of schedule
-    let start_h = parseInt(schedule.start.split(":")[0]);
+    let start_h = parseInt(schedule.start.split(":")[0])+adapt;
     let start_m = parseFloat(schedule.start.split(":")[1]) / 60;
-    let end_h = parseInt(schedule.end.split(":")[0]);
+    let end_h = parseInt(schedule.end.split(":")[0])+adapt;
     let end_m = parseFloat(schedule.end.split(":")[1]) / 60;
     // grid id for start hour
     let start_id = schedule.weekday + "-" + start_h;
@@ -115,6 +117,7 @@ export default function Weekday(props) {
               editSchedule={editSchedule}
               handleDel={handleDel}
               key={"schedule-" + day + "-" + i}
+              adapt={adapt}
             ></Schedule>
           );
         })}
@@ -171,8 +174,21 @@ function Schedule(props) {
   function popUp(is) {
     setIsopen(is);
   }
-  const { schedule, day, date, editSchedule, handleDel } = props;
+  const { schedule, day, date, editSchedule, handleDel,adapt } = props;
+  const [sch,setSch]=useState(schedule)
   const hour = schedule.start.split(":")[0];
+  useEffect(() => {
+    if(adapt!==0){
+      let start_h=parseInt(schedule.start.split(":")[0])+adapt
+      let end_h=parseInt(schedule.end.split(":")[0])+adapt
+      let newStart=start_h+":"+schedule.start.split(":")[1]
+      let newEnd=end_h+":"+schedule.end.split(":")[1]
+      setSch({...schedule,start:newStart,end:newEnd})
+    }   
+    return () => {
+    }
+  }, [adapt])
+  
   return (
     <>
       <div
@@ -182,8 +198,8 @@ function Schedule(props) {
           setIsopen(true);
         }}
       >
-        <div className={wk.start_time}>{schedule.start}</div>
-        <div className={wk.end_time}>{schedule.end}</div>
+        <div className={wk.start_time}>{sch.start}</div>
+        <div className={wk.end_time}>{sch.end}</div>
         <div className={wk.title}>{schedule.title}</div>
         <div className={wk.info}>{schedule.info}</div>
       </div>

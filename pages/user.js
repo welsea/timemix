@@ -19,7 +19,7 @@ export default function user() {
 
   function handleChange(e) {
     setSelectedTimezone(e.value);
-    console.log(e);
+    // console.log(e);
   }
 
   function handleClick() {

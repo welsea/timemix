@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import tool from "./index.module.css";
 import { DateTime } from "luxon";
 import { MainContext } from "../../pages";
+import TimezoneSelect from "react-timezone-select";
 
 /**
  * todo:
@@ -100,38 +101,72 @@ function Tools(props) {
     let tmp = DateTime.fromJSDate(state.date).toISODate({ format: "basic" });
     setPureDate(tmp);
   }, [state.date]);
-
+  const [isShow, setIsShow] = useState(false);
   return (
-    <div className={tool.layout}>
-      <div className={tool.alc}>
-        <div className={tool.alc} style={{ marginRight: "2em" }}>
-          <WeekButton
-            aria-label="Previous Week"
-            onClick={() => {
-              dispatch({ type: "PREV" });
-            }}
-            children={<FaAngleDoubleLeft />}
-          ></WeekButton>
-          <span style={{ color: "#f3aa28" }}>Week {state.num}</span>
-          <WeekButton
-            aria-label="Previous Week"
-            onClick={() => {
-              dispatch({ type: "NEXT" });
-            }}
-            children={<FaAngleDoubleRight />}
-          ></WeekButton>
-        </div>
+    <div>
+      <div className={tool.layout}>
         <div className={tool.alc}>
-          <WeekButton children={<FaCalendarDay />}></WeekButton>
-          <DatePicker
-            selected={state.date}
-            dateFormat="dd/MM/yyyy"
-            calendarStartDay={1}
-            onChange={(date) => dispatch({ type: "PICKER", value: date })}
-          />
+          <div className={tool.alc} style={{ marginRight: "2em" }}>
+            <WeekButton
+              aria-label="Previous Week"
+              onClick={() => {
+                dispatch({ type: "PREV" });
+              }}
+              children={<FaAngleDoubleLeft />}
+            ></WeekButton>
+            <span style={{ color: "#f3aa28" }}>Week {state.num}</span>
+            <WeekButton
+              aria-label="Previous Week"
+              onClick={() => {
+                dispatch({ type: "NEXT" });
+              }}
+              children={<FaAngleDoubleRight />}
+            ></WeekButton>
+          </div>
+          <div className={tool.alc}>
+            <WeekButton children={<FaCalendarDay />}></WeekButton>
+            <DatePicker
+              selected={state.date}
+              dateFormat="dd/MM/yyyy"
+              calendarStartDay={1}
+              onChange={(date) => dispatch({ type: "PICKER", value: date })}
+            />
+          </div>
         </div>
+        {/* <Search /> */}
+        {/* <button onClick={() => setIsShow(!isShow)}>Change Timezone</button> */}
+        <ChangeTimezone />
       </div>
-      {/* <Search /> */}
+      {/* {isShow && <ChangeTimezone />} */}
+    </div>
+  );
+}
+
+function ChangeTimezone() {
+  const [selectedTimezone, setSelectedTimezone] = useState(
+    Intl.DateTimeFormat().resolvedOptions().timeZone
+  );
+  const content = useContext(MainContext);
+  const [tz,setTz]=content.tz
+  const [tmpTz, setTmpTz] = useState(0)
+  function handleChange(e) {
+    setSelectedTimezone(e.value);
+    setTmpTz(e.offset)
+  }
+  function handleClick(){
+    setTz(tmpTz)
+    window.alert("Adapte all schedules time to new time zone!")
+  }
+  return (
+    <div className={tool.tz}>
+      Current Time Zone: {selectedTimezone}&nbsp;&nbsp;
+      <div>
+        <TimezoneSelect
+          value={selectedTimezone}
+          onChange={(e) => handleChange(e)}
+        />
+        <button className={tool.tzbtn} onClick={handleClick}>change timezone</button>
+      </div>
     </div>
   );
 }

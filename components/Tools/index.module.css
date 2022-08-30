@@ -3,7 +3,7 @@
     justify-content: space-between;
     padding: 10px 10px 0;
     align-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .search{
@@ -15,4 +15,20 @@
 .alc{
     display: flex;
     align-items: center;
+}
+
+.tz{
+    display: flex;
+    align-items: baseline;
+    font-size: 0.8em;
+}
+
+.tzbtn{
+    float: right;
+    margin-top: 1em;
+    background-color: white;
+    border: 1px solid #FFB11B;
+    color: #FFB11B;
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
 }

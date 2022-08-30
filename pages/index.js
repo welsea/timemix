@@ -12,8 +12,6 @@ let redis = new Redis(process.env.REDIS_URL);
 // useContext
 // schedules and dates
 export const MainContext = createContext();
-// user info
-export const UserContext = createContext();
 
 // get whole week dates
 function getDates(value) {
@@ -32,10 +30,10 @@ function getDates(value) {
 
 export default function App({ data }) {
   const [schedules, setSchedules] = useState(data.schedules);
-  const [user, setUser] = useState(data.user[0]);
   const [date, setDate] = useState(DateTime.now());
   const [dates, setDates] = useState(getDates(date));
   const [pureDate, setPureDate] = useState(date.toISODate({ format: "basic" }));
+  const [tz, setTz] = useState(2)
 
   useEffect(() => {
     // adter chenge date -> change dates array and get schedules from DB
@@ -54,18 +52,17 @@ export default function App({ data }) {
     return () => {};
   }, [pureDate]);
 
+
   return (
     <div>
-      <UserContext.Provider value={{ user: [user, setUser] }}>
-        <Header />
-      </UserContext.Provider>
+      <Header />
       <Note />
       <MainContext.Provider
         value={{
           date: [pureDate, setPureDate],
           schedules: [schedules, setSchedules],
           dates,
-          user: [user, setUser],
+          tz:[tz,setTz]
         }}
       >
         <Pane />

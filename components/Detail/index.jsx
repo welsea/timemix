@@ -28,12 +28,12 @@ export default function Detail(props) {
   const [isShare, setIsShare] = useState(false);
   const [isCopied, setisCopied] = useState(false);
 
-  useEffect(() => {
-    // setIsShare(props.content.share)
-    return () => {
-      console.log("share:", isShare || share);
-    };
-  }, [props.share]);
+  // useEffect(() => {
+  //   // setIsShare(props.content.share)
+  //   return () => {
+  //     console.log("share:", isShare || share);
+  //   };
+  // }, [props.share]);
 
   async function changeShare(id, date, index) {
     // pass id, date
@@ -96,8 +96,9 @@ export default function Detail(props) {
   }
 
   function handleEdit() {
-    if (!(share || isShare)) gotoEdit(true);
-    else alert("can't edit a shared event.");
+    // if (!(share || isShare)) 
+    // else alert("can't edit a shared event.");
+    gotoEdit(true);
   }
   return (
     <div>
@@ -121,7 +122,7 @@ export default function Detail(props) {
           <tr>
             <td>{content.info}</td>
           </tr>
-          {(isShare || share) && (
+          {/* {(isShare || share) && (
             <tr className={d.shareRow}>
               
               <td style={{"flex":"auto"}}>
@@ -135,14 +136,14 @@ export default function Detail(props) {
               </td>
               <td className={d.note}>Copy to share with others.</td>
             </tr>
-          )}
+          )} */}
         </tbody>
       </table>
       <div className={d.btnrow}>
-        <BiShare onClick={handleShare} />
+        <BiShare onClick={handleShare} color={"#d4d4d4"}/>
         <BiEditAlt
           onClick={handleEdit}
-          color={isShare || share ? "#d4d4d4" : "#FFB11B"}
+          color={"#FFB11B"}
         />
         <MdDeleteOutline onClick={clickDel} />
       </div>
