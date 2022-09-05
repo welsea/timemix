@@ -1,3 +1,9 @@
-Share schedule with your friends in diferent timezone.
+## TimeMix
+- setup schedules
+- weekly view
+- change timezone -> schedules' time will update with it
 
-React+Next.js+Redis
+## tech stack
+- React 
+- Next.js
+- Redis
