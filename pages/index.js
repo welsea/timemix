@@ -92,14 +92,14 @@ export async function getServerSideProps() {
     else data.push(null);
   }
   // example user
-  const tmpuser = await redis.call("JSON.GET", "users", "$..ushsudhsk");
-  const user = JSON.parse(tmpuser);
+  // const tmpuser = await redis.call("JSON.GET", "users", "$..ushsudhsk");
+  // const user = JSON.parse(tmpuser);
 
   return {
     props: {
       data: {
         schedules: data,
-        user: user,
+        // user: user,
       },
     },
   };
