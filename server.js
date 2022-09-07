@@ -1,5 +1,6 @@
 const next = require('next')
 const Koa=require('koa')
+const Router = require('koa-router')
 
 const dev=process.env.NODE_ENV !== 'production'
 const app=next({dev})
@@ -8,6 +9,12 @@ const handle=app.getRequestHandler()
 app.prepare().then(()=>{
     // 基础koa
     const server=new Koa()
+    const router = new Router()
+	// 首页
+    router.get('/', async ctx => {
+      await app.render(ctx.req, ctx.res, '/', ctx.query)
+      ctx.respond = false
+    })
 
     // koa使用：中间件 server.use()
     // ctx 记录了请求内容+返回内容：
