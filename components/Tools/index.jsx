@@ -27,7 +27,7 @@ function Search() {
 }
 
 function WeekButton(props) {
-  return <span style={{ color: "#f3aa28", margin: "0 2px" }} {...props}></span>;
+  return <span style={{ color: "#2364a3", margin: "0 2px" }} {...props}></span>;
 }
 
 function ChangeWeekNum(e) {
@@ -114,7 +114,7 @@ function Tools(props) {
               }}
               children={<FaAngleDoubleLeft />}
             ></WeekButton>
-            <span style={{ color: "#f3aa28" }}>Week {state.num}</span>
+            <span style={{ color: "#2364a3" }}>Week {state.num}</span>
             <WeekButton
               aria-label="Previous Week"
               onClick={() => {
@@ -160,7 +160,7 @@ function ChangeTimezone() {
   return (
     <div className={tool.tz}>
       Current Time Zone: {selectedTimezone}&nbsp;&nbsp;
-      <div>
+      <div style={{display:"flex",alignItems:"baseline"}}>
         <TimezoneSelect
           value={selectedTimezone}
           onChange={(e) => handleChange(e)}

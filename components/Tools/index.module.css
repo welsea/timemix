@@ -3,7 +3,7 @@
     justify-content: space-between;
     padding: 10px 10px 0;
     align-content: center;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .search{
@@ -27,8 +27,9 @@
     float: right;
     margin-top: 1em;
     background-color: white;
-    border: 1px solid #FFB11B;
-    color: #FFB11B;
+    border: 1px solid #7cbde8;
+    color: #7cbde8;
     border-radius: 0.5em;
     padding: 0.5em 1em;
+    margin-left: 1em;
 }

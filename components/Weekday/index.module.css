@@ -1,6 +1,6 @@
 .showtitle{
-    background-color: #fad783;
-    color: #896306;
+    background-color: #7cbde8;
+    color: white;
     height: 2em;
     text-align: center;
     line-height: 2em;
@@ -25,8 +25,8 @@
     min-width: 2em;
     max-width: 2em;
     text-align: center;
-    background-color: #fad783;
-    color: #896306;
+    background-color: #7cbde8;
+    color: white;
 }
 
 .num,.hour {

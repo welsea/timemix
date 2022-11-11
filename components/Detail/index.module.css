@@ -29,7 +29,7 @@
     padding: 0.5em 0;
     display: flex;
     justify-content: space-around;
-    color:#FFB11B;
+    color:#9fb7ce;
   }
   /* .btnrow div{
     width: 50%;
@@ -39,7 +39,7 @@
   } */
 
   .addBtn{
-    background-color: #E98B2A;
+    background-color: #2364a3;
     color: white;
   }
   .delbtn{
@@ -49,7 +49,7 @@
 
 
   .addBtn{
-    background-color: #E98B2A;
+    background-color: #2364a3;
     padding: 0.5em 1em;
     color: white;
     text-align: center;
@@ -70,11 +70,11 @@
 
   .copied{
     font-size: 0.8em;
-    color: #E98B2A;
+    color: #2364a3;
   }
   .copybtn{
     border:none;
-    background-color: #E98B2A;
+    background-color: #2364a3;
     color:white;
     border-radius: 0.2em;
     padding: 0.3em 0.5em;
@@ -93,7 +93,7 @@
     flex-wrap: wrap;
   }
   .note{
-    color:#E98B2A;
+    color:#6684a0;
     font-size: 0.8em;
     flex:0 0 100%;
   }

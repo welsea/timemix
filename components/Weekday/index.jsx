@@ -127,7 +127,7 @@ export default function Weekday(props) {
             return (
               <div
                 key={day + "-" + hour}
-                style={{ height: "2em", backgroundColor: "#fad783" }}
+                style={{ height: "2em", backgroundColor: "#7cbde8" }}
               >
                 &nbsp;
               </div>

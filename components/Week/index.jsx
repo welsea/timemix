@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import tl from "./index.module.css";
 import Weekday from "../Weekday";
 import { MainContext } from "../../pages";
-import { FaTruckMonster } from "react-icons/fa";
 
 
 /**

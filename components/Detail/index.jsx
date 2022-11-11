@@ -143,7 +143,7 @@ export default function Detail(props) {
         <BiShare onClick={handleShare} color={"#d4d4d4"}/>
         <BiEditAlt
           onClick={handleEdit}
-          color={"#FFB11B"}
+          color={"#9fb7ce"}
         />
         <MdDeleteOutline onClick={clickDel} />
       </div>

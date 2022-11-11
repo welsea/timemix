@@ -4,7 +4,6 @@ import { createContext, useState, useEffect } from "react";
 import Header from "../components/Header";
 import Pane from "../components/Pane";
 import { DateTime } from "luxon";
-import Note from "../components/Note";
 
 // connect redis
 let redis = new Redis(process.env.REDIS_URL);
@@ -56,7 +55,7 @@ export default function App({ data }) {
   return (
     <div>
       <Header />
-      <Note />
+
       <MainContext.Provider
         value={{
           date: [pureDate, setPureDate],
