@@ -1,6 +1,6 @@
 ## TimeMix
-**unfinished** <br />
-check the [demo](https://timemix.vercel.app/) <br />
+**unfinished** <br/>
+**check the [demo](https://timemix.vercel.app/)** <br />
 You can do:
 1. add new schedule
 2. edit exist schedules
