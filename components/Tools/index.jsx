@@ -135,7 +135,7 @@ function Tools(props) {
         </div>
         {/* <Search /> */}
         {/* <button onClick={() => setIsShow(!isShow)}>Change Timezone</button> */}
-        <ChangeTimezone />
+        {/* <ChangeTimezone /> */}
       </div>
       {/* {isShow && <ChangeTimezone />} */}
     </div>

@@ -23,7 +23,7 @@ export default function Header() {
         TimeMix
       </div>
       <div >
-        <div>demoUser</div>
+        {/* <div>demoUser</div> */}
       </div>
     </div>
   );

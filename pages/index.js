@@ -1,12 +1,7 @@
-import Redis from "ioredis";
 import { createContext, useState, useEffect } from "react";
-// import React from "react";
 import Header from "../components/Header";
 import Pane from "../components/Pane";
 import { DateTime } from "luxon";
-
-// connect redis
-let redis = new Redis(process.env.REDIS_URL);
 
 // useContext
 // schedules and dates
@@ -27,8 +22,8 @@ function getDates(value) {
   return newdates;
 }
 
-export default function App({ data }) {
-  const [schedules, setSchedules] = useState(data.schedules);
+export default function App() {
+  const [schedules, setSchedules] = useState(Array(7).fill(null));
   const [date, setDate] = useState(DateTime.now());
   const [dates, setDates] = useState(getDates(date));
   const [pureDate, setPureDate] = useState(date.toISODate({ format: "basic" }));
@@ -39,15 +34,6 @@ export default function App({ data }) {
     let tmp = DateTime.fromFormat(pureDate, "yyyyMMdd");
     setDate(tmp);
     setDates(getDates(tmp));
-    const getSchedules = async () => {
-      const response = await fetch("/api/content?date=" + pureDate, {
-        method: "GET",
-      });
-      const content = await response.json();
-      setSchedules(content);
-    };
-
-    getSchedules().catch(console.error);
     return () => {};
   }, [pureDate]);
 
@@ -55,7 +41,6 @@ export default function App({ data }) {
   return (
     <div>
       <Header />
-
       <MainContext.Provider
         value={{
           date: [pureDate, setPureDate],
@@ -70,36 +55,3 @@ export default function App({ data }) {
   );
 }
 
-// get initial full week schedules
-export async function getServerSideProps() {
-  const now = DateTime.now();
-  const dates = getDates(now);
-  const week = dates.map((item, i) => {
-    let tmp = item.split(".");
-    return tmp;
-  });
-
-  const data = [];
-  for (const item of week) {
-    let tmp = await redis.call(
-      "JSON.GET",
-      "ushsudhsk",
-      "$.." + item[2] + "." + item[1] + "." + item[0]
-    );
-    let tmp2 = JSON.parse(tmp);
-    if (tmp2.length !== 0) data.push(JSON.parse(tmp));
-    else data.push(null);
-  }
-  // example user
-  // const tmpuser = await redis.call("JSON.GET", "users", "$..ushsudhsk");
-  // const user = JSON.parse(tmpuser);
-
-  return {
-    props: {
-      data: {
-        schedules: data,
-        // user: user,
-      },
-    },
-  };
-}

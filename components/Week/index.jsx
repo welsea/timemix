@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import tl from "./index.module.css";
 import Weekday from "../Weekday";
 import { MainContext } from "../../pages";
@@ -15,19 +15,9 @@ export default function Week() {
   const content = useContext(MainContext);
   const dates = content.dates;
   const [schedules, setSchedules] = content.schedules
+  const [change,setChange]=useState(false)
 
   const days = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-
-  async function add(s,is){
-    const obj={
-      isEmpty:is,
-      content:s
-    }
-    const response = await fetch(`/api/content`, {
-      method: "POST",
-      body:JSON.stringify(obj)
-    });
-  };
 
   function editSchedule(id, s) {
     const index = parseInt(s.weekday - 1);
@@ -56,29 +46,30 @@ export default function Week() {
       } else return ws;
     });
     // schedules of the day.
-    add(tmpschedules[index],false)
     setSchedules(tmpschedules);
   }
 
   function addSchedule(id, news) {
     const index = news.weekday - 1;
-    // before add this schedules is empty or not?
-    const isEmpty=new Boolean(!schedules[index])
     news.id = id;
     const newschedules = schedules.map((ws, i) => {
       if (i === index) {
         if (ws === null) {
-          ws = [[news]];
+          ws = [news];
         } else {
-          let i=ws.length-1
-          ws[i].push(news)
+          ws.push(news)
         }
         return ws;
       } else return ws;
     });
-    add(newschedules[index],isEmpty)
     setSchedules(newschedules);
   }
+
+  useEffect(() => {
+    setChange(!change)
+  
+  }, [schedules])
+  
 
   return (
     <div className={tl.layout}>
@@ -91,7 +82,7 @@ export default function Week() {
               coltitle={[day, dates[i - 1]]}
               day={i}
               date={dates[i - 1]}
-              schedules={schedules[i - 1] ? schedules[i - 1][0] : false}
+              schedules={schedules[i-1]? schedules[i] : false}
               addSchedule={addSchedule}
               editSchedule={editSchedule}
             ></Weekday>

@@ -28,27 +28,6 @@ export default function Detail(props) {
   const [isShare, setIsShare] = useState(false);
   const [isCopied, setisCopied] = useState(false);
 
-  // useEffect(() => {
-  //   // setIsShare(props.content.share)
-  //   return () => {
-  //     console.log("share:", isShare || share);
-  //   };
-  // }, [props.share]);
-
-  async function changeShare(id, date, index) {
-    // pass id, date
-    const obj = {
-      id,
-      date,
-      index,
-      share: true,
-    };
-    const response = await fetch(`/api/content`, {
-      method: "PUT",
-      body: JSON.stringify(obj),
-    });
-  }
-
   function handleShare() {
     if (!share) {
       if (
@@ -74,7 +53,6 @@ export default function Detail(props) {
           return wd;
         });
         setSchedules(tmpall);
-        changeShare(id, content.date, index);
         setIsShare(true);
       }
     } else {

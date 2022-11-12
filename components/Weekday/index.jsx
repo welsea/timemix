@@ -2,15 +2,14 @@ import React, { Component, useState, useEffect, useContext } from "react";
 import wk from "./index.module.css";
 import PopBox from "../PopBox";
 import { MainContext } from "../../pages";
-import { compose } from "@reduxjs/toolkit";
 
 export default function Weekday(props) {
-  // this schedules is not the one in  useContext, this is only for one day.
-  const { day, date, coltitle, editSchedule, addSchedule, schedules } = props;
+  const { day, date, coltitle } = props;
+
+  const [schedules, setSchedules] = useState([]);
 
   // this is for updating pages
   const content = useContext(MainContext);
-  const [allschedules, setAllSchedules] = content.schedules;
 
   const colors = {
     0: "#91AD70",
@@ -37,23 +36,20 @@ export default function Weekday(props) {
   const adapt = tz - 2;
 
   useEffect(() => {
-    if (schedules) {
-      const newss = schedules.map((s) => {
-        let tmp = Object.assign(s);
-        tmp.style = getStyle(tmp);
-        return tmp;
-      });
-      setSchWithStyle(newss);
+    if (schedules.length !== 0) {
+      let tmp=schedules.map((item)=>{
+          item.style=getStyle(item)
+      })
+      setSchedules(tmp)
     }
-    return () => {};
-  }, [allschedules, tz]);
+  }, [tz]);
 
   function getStyle(schedule) {
     // TODO: change to only need calculate once, when window size changed calculate again.
     //get the position of schedule
-    let start_h = parseInt(schedule.start.split(":")[0])+adapt;
+    let start_h = parseInt(schedule.start.split(":")[0]) + adapt;
     let start_m = parseFloat(schedule.start.split(":")[1]) / 60;
-    let end_h = parseInt(schedule.end.split(":")[0])+adapt;
+    let end_h = parseInt(schedule.end.split(":")[0]) + adapt;
     let end_m = parseFloat(schedule.end.split(":")[1]) / 60;
     // grid id for start hour
     let start_id = schedule.weekday + "-" + start_h;
@@ -71,44 +67,51 @@ export default function Weekday(props) {
     return stylecss;
   }
 
-  async function Del(id, date, index) {
-    // pass id, date
-    const obj = {
-      id,
-      date,
-      index,
-    };
-    const response = await fetch(`/api/content`, {
-      method: "DELETE",
-      body: JSON.stringify(obj),
-    });
-  }
-
-  function handleDel(id, date) {
+  function handleDel(id) {
     let index = null;
     schedules.forEach((x, i) => {
       if (x.id === id) index = i;
     });
-    // todo: change all thechedules
-    // setAllSchedules()
-    const tmpall = allschedules.map((wd, i) => {
-      // into specific weekday
-      if (i === day - 1) {
-        // empty layer [0]
-        wd[0].splice(index, 1);
-        return wd;
+    let tmp = schedules;
+    tmp = schedules.slice(index, 1);
+    schedules(tmp);
+  }
+
+  function editSchedule(id, s) {
+    let tmp = schedules.map((x, i) => {
+      // to specific weekday
+      if (x.id === id) {
+        //update all the details
+        x.start = s.start;
+        x.end = s.end;
+        x.title = s.title;
+        x.type = s.type;
+        x.info = s.info;
+        // x.shareWith = s.shareWith;
+        x.date = s.date;
+        x.weekday = s.weekday;
+        x.style = getStyle(x);
       }
-      return wd;
+      return x;
     });
-    setAllSchedules(tmpall);
-    Del(id, date, index);
+    // schedules of the day.
+    setSchedules(tmp);
+  }
+
+  function addSchedule(id, news) {
+    news.id = id;
+    news.style = getStyle(news);
+    let tmps = schedules.map((item) => {
+      return item;
+    });
+    tmps[tmps.length] = news;
+    setSchedules(tmps);
   }
 
   return (
     <div className={day !== "not" ? wk.columns : wk.numClo}>
       {day !== "not" &&
-        schedules &&
-        schWithStyle.map((item, i) => {
+        schedules.map((item, i) => {
           return (
             <Schedule
               day={day}
@@ -174,21 +177,20 @@ function Schedule(props) {
   function popUp(is) {
     setIsopen(is);
   }
-  const { schedule, day, date, editSchedule, handleDel,adapt } = props;
-  const [sch,setSch]=useState(schedule)
+  const { schedule, day, date, editSchedule, handleDel, adapt } = props;
+  const [sch, setSch] = useState(schedule);
   const hour = schedule.start.split(":")[0];
   useEffect(() => {
-    if(adapt!==0){
-      let start_h=parseInt(schedule.start.split(":")[0])+adapt
-      let end_h=parseInt(schedule.end.split(":")[0])+adapt
-      let newStart=start_h+":"+schedule.start.split(":")[1]
-      let newEnd=end_h+":"+schedule.end.split(":")[1]
-      setSch({...schedule,start:newStart,end:newEnd})
-    }   
-    return () => {
+    if (adapt !== 0) {
+      let start_h = parseInt(schedule.start.split(":")[0]) + adapt;
+      let end_h = parseInt(schedule.end.split(":")[0]) + adapt;
+      let newStart = start_h + ":" + schedule.start.split(":")[1];
+      let newEnd = end_h + ":" + schedule.end.split(":")[1];
+      setSch({ ...schedule, start: newStart, end: newEnd });
     }
-  }, [adapt])
-  
+    return () => {};
+  }, [adapt]);
+
   return (
     <>
       <div
