@@ -11,6 +11,6 @@ You can do:
 5. change timezone -> update schedules into new timezone(update start time & end time)
 
 ## tech stack
-- React
+- React (native React)
 - Next.js
-- Redis
+- RedisJSON

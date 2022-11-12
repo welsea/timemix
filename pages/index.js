@@ -51,7 +51,17 @@ export default function App() {
       >
         <Pane />
       </MainContext.Provider>
+      <Footer />
     </div>
   );
+}
+
+function Footer(){
+  return(
+    <div className="footer">
+      <div>2022 @ <a href="https://github.com/welsea/timemix">github/welsea</a></div>
+    </div>
+  )
+
 }
 

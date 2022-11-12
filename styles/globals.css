@@ -20,3 +20,18 @@ a {
   width: fit-content;
   padding: 2em;
 }
+
+.footer{
+  position: relative;
+  float: bottom;
+  margin-top: 1rem;
+  padding: 1rem;
+  /* background-color: rgb(235, 195, 64); */
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9em;
+  color: #80a1b5;
+}
