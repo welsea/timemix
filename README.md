@@ -1,5 +1,3 @@
-loading...
-
-include back-end of timemix
+this branch include back-end of timemix, still under constructing
 
 React & Next.js & RedisJSON
